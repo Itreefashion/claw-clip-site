@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elegant Hair Claws and Clips — Luquan Gewu Zhixiang E-commerce</title>
+<meta name="description" content="Premium PC and TPEE hair claws and clips, crafted with a mature and elegant aesthetic.">
+<style>
+    /* ========== 全局基础设置 ========== */
+    html {
+        font-size: 20px; /* 放大到 125% (16px * 1.25) */
+        scroll-behavior: smooth;
+    }
+    
+    :root {
+        --bg: #fafafa;
+        --bg-alt: #f4f4f3;
+        --ink: #1a1a1a;
+        --ink-soft: #4a4a4a;
+        --muted: #888888;
+        --line: #e0e0e0;
+        --accent: #9e8c78;
+        --accent-soft: #d8c9b6;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+        font-family: Georgia, 'Times New Roman', serif;
+        background: var(--bg);
+        color: var(--ink);
+        line-height: 1.8;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+    }
+    
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+
+    /* 整体最大宽度放宽到 1200px，让图片更大 */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+    .container.narrow { max-width: 800px; }
+
+    /* ========== 导航栏 ========== */
+    .nav {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 28px 48px;
+        transition: background .35s, padding .35s, box-shadow .35s;
+    }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+        color: rgba(255,255,255,.95);
+        text-decoration: none;
+        font-size: 0.75rem;
+        letter-spacing: .15em;
+        text-transform: uppercase;
+        transition: color .25s;
+    }
+    .nav-links a:hover { color: var(--accent-soft); }
+
+    .nav.scrolled {
+        background: rgba(250,250,250,.98);
+        backdrop-filter: blur(10px);
+        padding: 16px 48px;
+        box-shadow: 0 1px 0 rgba(0,0,0,.05);
+    }
+    .nav.scrolled .nav-links a { color: #2a2a2a; }
+    .nav.scrolled .nav-links a:hover { color: var(--accent); }
+
+    .nav-toggle {
+        display: none;
+        width: 44px; height: 44px;
+        border: none;
+        border-radius: 50%;
+        background: rgba(255,255,255,.9);
+        cursor: pointer;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        padding: 0;
+        transition: background .3s;
+    }
+    .nav-toggle span {
+        display: block;
+        width: 20px; height: 1.5px;
+        background: #3a3a3a;
+        transition: transform .3s, opacity .3s;
+    }
+    .nav.scrolled .nav-toggle { background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+    .nav.open .nav-toggle span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav.open .nav-toggle span:nth-child(2) { opacity: 0; }
+    .nav.open .nav-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* ========== Banner 全屏 ========== */
+    .banner {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        min-height: 600px;
+        background: #dcdcdc url('banner.jpg') center center / cover no-repeat;
+    }
+
+    /* ========== 通用区块 ========== */
+    section { padding: 120px 0; scroll-margin-top: 80px; }
+    .section-label {
+        display: block;
+        text-align: center;
+        font-size: 0.7rem;
+        letter-spacing: .25em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 12px;
+    }
+    .section-title {
+        font-weight: 400;
+        font-size: clamp(2rem, 3vw, 2.5rem);
+        text-align: center;
+        margin-bottom: 50px;
+        letter-spacing: .02em;
+        color: var(--ink);
+    }
+
+    /* ========== About ========== */
+    .about { background: var(--bg); }
+    .about p { color: var(--ink-soft); font-size: 1.05rem; margin-bottom: 24px; text-align: justify; }
+    .about .hi {
+        font-size: 1.4rem;
+        color: var(--ink);
+        margin-bottom: 28px;
+        text-align: left;
+    }
+    .about .signature {
+        text-align: right;
+        font-style: italic;
+        font-size: 1.2rem;
+        color: var(--ink);
+        margin-top: 12px;
+        margin-bottom: 0;
+    }
+
+    /* ========== 材质左右交替 (放大图片区域) ========== */
+    .materials { background: var(--bg-alt); }
+    .material-row {
+        display: grid;
+        /* 原来是 1fr 1fr，现在改为 7fr 5fr，让图片占据更宽的比例 */
+        grid-template-columns: 7fr 5fr; 
+        gap: 80px;
+        align-items: center;
+        margin-bottom: 120px;
+    }
+    .material-row:last-child { margin-bottom: 0; }
+    .material-row.reverse .material-image { order: 2; }
+    /* 当方向反转时，文字占 7fr，图片占 5fr，保证图片大小一致 */
+    .material-row.reverse { grid-template-columns: 5fr 7fr; } 
+    
+    .material-image img {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        background: #e0e0e0;
+    }
+    .material-text h2 {
+        font-weight: 400;
+        font-size: clamp(1.8rem, 2.8vw, 2.3rem);
+        margin-bottom: 20px;
+        color: var(--ink);
+    }
+    .material-text p {
+        color: var(--ink-soft);
+        font-size: 1.1rem; /* 文字稍微放大一点点，增强可读性 */
+        line-height: 1.9;
+    }
+
+    /* ========== Products ========== */
+    .products { background: var(--bg); }
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+    }
+    .product-card {
+        aspect-ratio: 1 / 1;
+        overflow: hidden;
+        background: #e9e9e9;
+    }
+    .product-card img {
+        width: 100%; height: 100%;
+        object-fit: cover;
+        transition: transform 1s ease;
+    }
+    .product-card:hover img { transform: scale(1.05); }
+
+    /* ========== Founder ========== */
+    .founder { background: var(--bg-alt); }
+    .founder-grid {
+        display: grid;
+        grid-template-columns: 5fr 7fr;
+        gap: 80px;
+        align-items: center;
+    }
+    .founder-image img {
+        width: 100%;
+        aspect-ratio: 6 / 9;
+        object-fit: cover;
+        background: #e0e0e0;
+    }
+    .founder-text .lead {
+        font-size: 1.6rem;
+        color: var(--ink);
+        line-height: 1.5;
+        margin-bottom: 24px;
+    }
+    .founder-text p {
+        color: var(--ink-soft);
+        font-size: 1.05rem;
+        line-height: 1.9;
+        margin-bottom: 20px;
+        text-align: justify;
+    }
+    .founder-text p:last-child { margin-bottom: 0; }
+
+    /* ========== Contact ========== */
+    .contact { background: var(--bg); text-align: center; }
+    .contact-list { max-width: 640px; margin: 0 auto; }
+    .contact-item {
+        padding: 24px 0;
+        border-bottom: 1px solid var(--line);
+    }
+    .contact-item:first-child { border-top: 1px solid var(--line); }
+    .contact-item .label {
+        display: block;
+        font-size: 0.75rem;
+        letter-spacing: .25em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 8px;
+    }
+    .contact-item .value {
+        font-size: 1.15rem;
+        color: var(--ink);
+        text-decoration: none;
+        transition: color .25s;
+    }
+    a.value:hover { color: var(--accent); }
+
+    .instagram {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 56px; height: 56px;
+        margin-top: 48px;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        color: var(--ink);
+        transition: color .25s, border-color .25s, transform .25s;
+    }
+    .instagram:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+        transform: translateY(-3px);
+    }
+
+    footer {
+        text-align: center;
+        padding: 40px 20px;
+        font-size: 0.8rem;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: var(--muted);
+        border-top: 1px solid var(--line);
+    }
+
+    /* ========== 响应式：平板 ========== */
+    @media (max-width: 1024px) {
+        html { font-size: 18px; }
+        .container { padding: 0 32px; }
+        .nav { padding: 24px 32px; }
+        .nav.scrolled { padding: 14px 32px; }
+        .nav-links { gap: 24px; }
+        .products-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        
+        /* 平板端恢复 1:1 布局 */
+        .material-row, .material-row.reverse { grid-template-columns: 1fr 1fr; gap: 40px; }
+        .founder-grid { gap: 40px; }
+        section { padding: 100px 0; }
+    }
+
+    /* ========== 响应式：手机 ========== */
+    @media (max-width: 860px) {
+        html { font-size: 16px; }
+        .nav { padding: 16px 24px; }
+        .nav.scrolled { padding: 12px 24px; }
+        
+        .nav-toggle { display: flex; }
+        .nav-links {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 24px; left: 24px;
+            flex-direction: column;
+            gap: 0;
+            background: rgba(250,250,250,.98);
+            box-shadow: 0 14px 40px rgba(0,0,0,.1);
+            padding: 8px 0;
+            display: none;
+            text-align: center;
+        }
+        .nav.open .nav-links { display: flex; }
+        .nav-links a {
+            color: #2a2a2a !important;
+            padding: 16px 24px;
+            display: block;
+            font-size: 0.9rem;
+        }
+        .nav-links a:hover { background: #f2f2f2; }
+
+        .banner { height: 65vh; min-height: 400px; }
+        
+        /* 手机端强制单列，图片在上，文字在下 */
+        .material-row, .material-row.reverse { grid-template-columns: 1fr; gap: 32px; }
+        .material-row.reverse .material-image { order: 0; }
+        .material-text p { max-width: none; text-align: left; }
+        
+        .founder-grid { grid-template-columns: 1fr; gap: 32px; }
+        .founder-image { max-width: 420px; margin: 0 auto; }
+        .founder-text p { text-align: left; }
+        
+        .products-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        section { padding: 80px 0; }
+        .about p { text-align: left; }
+    }
+
+    @media (max-width: 520px) {
+        .banner { height: 55vh; }
+        .container { padding: 0 20px; }
+        .contact-item .value { font-size: 1rem; }
+    }
+</style>
+</head>
+<body>
+
+<!-- 导航 -->
+<nav class="nav" id="nav">
+    <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#founder">Meet the Founder</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+    </button>
+</nav>
+
+<!-- Banner -->
+<header id="home" class="banner"></header>
+
+<!-- About -->
+<section id="about" class="about">
+    <div class="container narrow">
+        <p class="hi">Hi there,</p>
+        <p>Luquan Gewu Zhixiang E-commerce Company is a manufacturer and wholesaler specializing in high-end hair clips with a mature and elegant aesthetic. Our hair clips are crafted via injection molding, using premium PC and TPEE materials, available in a wide variety of shapes and designs.</p>
+        <p>We take great care in every production step: from raw material selection, injection molding, initial inspection and sorting, spring assembly, spray painting, final quality check to packaging. Rigorous control across all procedures guarantees superior quality for every piece. Customers can instantly feel the outstanding quality of our hair clips and recognize they offer excellent value for money.</p>
+        <p>We also provide custom services tailored to your requirements. Focused exclusively on high-end hair clip solutions, we welcome your inquiries and collaborations.</p>
+        <p class="signature">XOXO, Ben</p>
+    </div>
+</section>
+
+<!-- 材质左右交替 -->
+<section class="materials">
+    <div class="container">
+        <div class="material-row">
+            <div class="material-image"><img src="pc-claw.jpg" alt="PC hair claw"></div>
+            <div class="material-text">
+                <h2>PC Hair Claw</h2>
+                <p>Crafted from premium polycarbonate for a smooth, durable finish. PC offers excellent strength and a refined surface that keeps its shape season after season.</p>
+            </div>
+        </div>
+        <div class="material-row reverse">
+            <div class="material-image"><img src="tpee-claw.jpg" alt="TPEE hair claw"></div>
+            <div class="material-text">
+                <h2>TPEE Hair Claw</h2>
+                <p>Made with flexible TPEE for a gentle, comfortable grip. The material offers outstanding resilience, so the clip holds securely while feeling light and easy to wear.</p>
+            </div>
+        </div>
+        <div class="material-row">
+            <div class="material-image"><img src="flat-claw.jpg" alt="Flat hair claw"></div>
+            <div class="material-text">
+                <h2>Flat Hair Claw</h2>
+                <p>A slim, low-profile silhouette designed for a seamless look. The flat shape sits close to the head, bringing a quiet, understated finish to everyday styling.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Products -->
+<section id="products" class="products">
+    <div class="container">
+        <span class="section-label">Selected Pieces</span>
+        <h2 class="section-title">Products</h2>
+        <div class="products-grid">
+            <div class="product-card"><img src="product1.jpg" alt="Claw clip 1"></div>
+            <div class="product-card"><img src="product2.jpg" alt="Claw clip 2"></div>
+            <div class="product-card"><img src="product3.jpg" alt="Claw clip 3"></div>
+            <div class="product-card"><img src="product4.jpg" alt="Claw clip 4"></div>
+            <div class="product-card"><img src="product5.jpg" alt="Claw clip 5"></div>
+            <div class="product-card"><img src="product6.jpg" alt="Claw clip 6"></div>
+            <div class="product-card"><img src="product7.jpg" alt="Claw clip 7"></div>
+            <div class="product-card"><img src="product8.jpg" alt="Claw clip 8"></div>
+            <div class="product-card"><img src="product9.jpg" alt="Claw clip 9"></div>
+            <div class="product-card"><img src="product10.jpg" alt="Claw clip 10"></div>
+            <div class="product-card"><img src="product11.jpg" alt="Claw clip 11"></div>
+            <div class="product-card"><img src="product12.jpg" alt="Claw clip 12"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Meet the Founder -->
+<section id="founder" class="founder">
+    <div class="container">
+        <div class="founder-grid">
+            <div class="founder-image"><img src="founder.jpg" alt="Ben, founder"></div>
+            <div class="founder-text">
+                <!-- 已按要求修改这句话 -->
+                <p class="lead">Ben is the visionary behind our brand.</p>
+                <p>Driven by a passion for sophisticated, timeless hair accessories, Ben spotted the market need for elegant claw clips that combine beauty and long-lasting performance. Guided by this vision, he founded our company dedicated to premium hair clip.</p>
+                <p>Drawing on his rich experience in injection molding, Ben sets uncompromising quality standards. He advocates meticulous checks across the whole production flow, from selecting premium PC and TPEE materials to molding, finishing and packaging.</p>
+                <p>Under Ben’s pursuit of excellence, our team supports custom orders for global partners. We craft elegant, reliable hair accessories that bring quiet confidence to every wearer.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="contact">
+    <div class="container narrow">
+        <span class="section-label">Get in Touch</span>
+        <h2 class="section-title">Contact</h2>
+        <div class="contact-list">
+            <div class="contact-item">
+                <span class="label">Company</span>
+                <span class="value">Luquan Gewu Zhixiang E-commerce Company</span>
+            </div>
+            <div class="contact-item">
+                <span class="label">Address</span>
+                <span class="value">No.160 Longquan Road, Shijiazhuang City, China.</span>
+            </div>
+            <div class="contact-item">
+                <span class="label">Phone</span>
+                <a class="value" href="tel:+8613930449578">0086 139 3044 9578</a>
+            </div>
+            <div class="contact-item">
+                <span class="label">Email</span>
+                <a class="value" href="mailto:dailyhairclip@163.com">dailyhairclip@163.com</a>
+            </div>
+        </div>
+        <a class="instagram" href="http://instagram.com/dailyhairclip" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+        </a>
+    </div>
+</section>
+
+<footer>© 2025 Luquan Gewu Zhixiang E-commerce Company. All rights reserved.</footer>
+
+<script>
+    const nav = document.getElementById('nav');
+    const navToggle = document.getElementById('navToggle');
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 60) {
+            nav.classList.add('scrolled');
+        } else {
+            nav.classList.remove('scrolled');
+        }
+    });
+
+    navToggle.addEventListener('click', () => {
+        const open = nav.classList.toggle('open');
+        navToggle.setAttribute('aria-expanded', open);
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            nav.classList.remove('open');
+            navToggle.setAttribute('aria-expanded', 'false');
+        });
+    });
+</script>
+
+</body>
+</html>
