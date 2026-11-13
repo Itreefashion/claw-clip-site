@@ -11,6 +11,7 @@
     html {
         font-size: 20px; /* 放大到 125% (16px * 1.25) */
         scroll-behavior: smooth;
+        -webkit-tap-highlight-color: transparent; /* 移除手机端点击默认的蓝框 */
     }
     
     :root {
@@ -38,7 +39,6 @@
     img { display: block; max-width: 100%; }
     a { color: inherit; }
 
-    /* 整体最大宽度放宽到 1200px，让图片更大 */
     .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
     .container.narrow { max-width: 800px; }
 
@@ -79,18 +79,20 @@
         border: none;
         border-radius: 50%;
         background: rgba(255,255,255,.9);
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* 增加一点阴影防看不清 */
         cursor: pointer;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         gap: 5px;
         padding: 0;
-        transition: background .3s;
+        transition: background .3s, transform .2s;
     }
+    .nav-toggle:active { transform: scale(0.95); } /* 点击缩放反馈 */
     .nav-toggle span {
         display: block;
         width: 20px; height: 1.5px;
-        background: #3a3a3a;
+        background: #2a2a2a;
         transition: transform .3s, opacity .3s;
     }
     .nav.scrolled .nav-toggle { background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
@@ -145,19 +147,17 @@
         margin-bottom: 0;
     }
 
-    /* ========== 材质左右交替 (放大图片区域) ========== */
+    /* ========== 材质左右交替 ========== */
     .materials { background: var(--bg-alt); }
     .material-row {
         display: grid;
-        /* 原来是 1fr 1fr，现在改为 7fr 5fr，让图片占据更宽的比例 */
-        grid-template-columns: 7fr 5fr; 
+        grid-template-columns: 7fr 5fr;
         gap: 80px;
         align-items: center;
         margin-bottom: 120px;
     }
     .material-row:last-child { margin-bottom: 0; }
     .material-row.reverse .material-image { order: 2; }
-    /* 当方向反转时，文字占 7fr，图片占 5fr，保证图片大小一致 */
     .material-row.reverse { grid-template-columns: 5fr 7fr; } 
     
     .material-image img {
@@ -174,7 +174,7 @@
     }
     .material-text p {
         color: var(--ink-soft);
-        font-size: 1.1rem; /* 文字稍微放大一点点，增强可读性 */
+        font-size: 1.1rem;
         line-height: 1.9;
     }
 
@@ -247,6 +247,7 @@
         color: var(--ink);
         text-decoration: none;
         transition: color .25s;
+        word-break: break-all; /* 防止长邮箱撑破手机屏幕 */
     }
     a.value:hover { color: var(--accent); }
 
@@ -261,7 +262,7 @@
         color: var(--ink);
         transition: color .25s, border-color .25s, transform .25s;
     }
-    .instagram:hover {
+    .instagram:hover, .instagram:active {
         color: var(--accent);
         border-color: var(--accent);
         transform: translateY(-3px);
@@ -285,8 +286,6 @@
         .nav.scrolled { padding: 14px 32px; }
         .nav-links { gap: 24px; }
         .products-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        
-        /* 平板端恢复 1:1 布局 */
         .material-row, .material-row.reverse { grid-template-columns: 1fr 1fr; gap: 40px; }
         .founder-grid { gap: 40px; }
         section { padding: 100px 0; }
@@ -306,23 +305,33 @@
             flex-direction: column;
             gap: 0;
             background: rgba(250,250,250,.98);
-            box-shadow: 0 14px 40px rgba(0,0,0,.1);
+            box-shadow: 0 14px 40px rgba(0,0,0,.15);
+            border-radius: 8px; /* 增加圆角更现代 */
             padding: 8px 0;
             display: none;
             text-align: center;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
-        .nav.open .nav-links { display: flex; }
+        .nav.open .nav-links { 
+            display: flex; 
+            opacity: 1;
+            transform: translateY(0);
+        }
         .nav-links a {
             color: #2a2a2a !important;
             padding: 16px 24px;
             display: block;
             font-size: 0.9rem;
+            border-bottom: 1px solid #eee;
         }
-        .nav-links a:hover { background: #f2f2f2; }
+        .nav-links li:last-child a { border-bottom: none; }
+        .nav-links a:active { background: #f2f2f2; }
 
         .banner { height: 65vh; min-height: 400px; }
         
-        /* 手机端强制单列，图片在上，文字在下 */
+        /* 手机端强制单列 */
         .material-row, .material-row.reverse { grid-template-columns: 1fr; gap: 32px; }
         .material-row.reverse .material-image { order: 0; }
         .material-text p { max-width: none; text-align: left; }
@@ -332,7 +341,8 @@
         .founder-text p { text-align: left; }
         
         .products-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-        section { padding: 80px 0; }
+        section { padding: 70px 0; }
+        .section-title { margin-bottom: 36px; }
         .about p { text-align: left; }
     }
 
@@ -340,6 +350,7 @@
         .banner { height: 55vh; }
         .container { padding: 0 20px; }
         .contact-item .value { font-size: 1rem; }
+        .about .hi { font-size: 1.25rem; }
     }
 </style>
 </head>
@@ -377,21 +388,21 @@
 <section class="materials">
     <div class="container">
         <div class="material-row">
-            <div class="material-image"><img src="pc-claw.jpg" alt="PC hair claw"></div>
+            <div class="material-image"><img src="pc-claw.jpg" alt="PC hair claw" loading="lazy"></div>
             <div class="material-text">
                 <h2>PC Hair Claw</h2>
                 <p>Crafted from premium polycarbonate for a smooth, durable finish. PC offers excellent strength and a refined surface that keeps its shape season after season.</p>
             </div>
         </div>
         <div class="material-row reverse">
-            <div class="material-image"><img src="tpee-claw.jpg" alt="TPEE hair claw"></div>
+            <div class="material-image"><img src="tpee-claw.jpg" alt="TPEE hair claw" loading="lazy"></div>
             <div class="material-text">
                 <h2>TPEE Hair Claw</h2>
                 <p>Made with flexible TPEE for a gentle, comfortable grip. The material offers outstanding resilience, so the clip holds securely while feeling light and easy to wear.</p>
             </div>
         </div>
         <div class="material-row">
-            <div class="material-image"><img src="flat-claw.jpg" alt="Flat hair claw"></div>
+            <div class="material-image"><img src="flat-claw.jpg" alt="Flat hair claw" loading="lazy"></div>
             <div class="material-text">
                 <h2>Flat Hair Claw</h2>
                 <p>A slim, low-profile silhouette designed for a seamless look. The flat shape sits close to the head, bringing a quiet, understated finish to everyday styling.</p>
@@ -406,18 +417,18 @@
         <span class="section-label">Selected Pieces</span>
         <h2 class="section-title">Products</h2>
         <div class="products-grid">
-            <div class="product-card"><img src="product1.jpg" alt="Claw clip 1"></div>
-            <div class="product-card"><img src="product2.jpg" alt="Claw clip 2"></div>
-            <div class="product-card"><img src="product3.jpg" alt="Claw clip 3"></div>
-            <div class="product-card"><img src="product4.jpg" alt="Claw clip 4"></div>
-            <div class="product-card"><img src="product5.jpg" alt="Claw clip 5"></div>
-            <div class="product-card"><img src="product6.jpg" alt="Claw clip 6"></div>
-            <div class="product-card"><img src="product7.jpg" alt="Claw clip 7"></div>
-            <div class="product-card"><img src="product8.jpg" alt="Claw clip 8"></div>
-            <div class="product-card"><img src="product9.jpg" alt="Claw clip 9"></div>
-            <div class="product-card"><img src="product10.jpg" alt="Claw clip 10"></div>
-            <div class="product-card"><img src="product11.jpg" alt="Claw clip 11"></div>
-            <div class="product-card"><img src="product12.jpg" alt="Claw clip 12"></div>
+            <div class="product-card"><img src="product1.jpg" alt="Claw clip 1" loading="lazy"></div>
+            <div class="product-card"><img src="product2.jpg" alt="Claw clip 2" loading="lazy"></div>
+            <div class="product-card"><img src="product3.jpg" alt="Claw clip 3" loading="lazy"></div>
+            <div class="product-card"><img src="product4.jpg" alt="Claw clip 4" loading="lazy"></div>
+            <div class="product-card"><img src="product5.jpg" alt="Claw clip 5" loading="lazy"></div>
+            <div class="product-card"><img src="product6.jpg" alt="Claw clip 6" loading="lazy"></div>
+            <div class="product-card"><img src="product7.jpg" alt="Claw clip 7" loading="lazy"></div>
+            <div class="product-card"><img src="product8.jpg" alt="Claw clip 8" loading="lazy"></div>
+            <div class="product-card"><img src="product9.jpg" alt="Claw clip 9" loading="lazy"></div>
+            <div class="product-card"><img src="product10.jpg" alt="Claw clip 10" loading="lazy"></div>
+            <div class="product-card"><img src="product11.jpg" alt="Claw clip 11" loading="lazy"></div>
+            <div class="product-card"><img src="product12.jpg" alt="Claw clip 12" loading="lazy"></div>
         </div>
     </div>
 </section>
@@ -426,9 +437,8 @@
 <section id="founder" class="founder">
     <div class="container">
         <div class="founder-grid">
-            <div class="founder-image"><img src="founder.jpg" alt="Ben, founder"></div>
+            <div class="founder-image"><img src="founder.jpg" alt="Ben, founder" loading="lazy"></div>
             <div class="founder-text">
-                <!-- 已按要求修改这句话 -->
                 <p class="lead">Ben is the visionary behind our brand.</p>
                 <p>Driven by a passion for sophisticated, timeless hair accessories, Ben spotted the market need for elegant claw clips that combine beauty and long-lasting performance. Guided by this vision, he founded our company dedicated to premium hair clip.</p>
                 <p>Drawing on his rich experience in injection molding, Ben sets uncompromising quality standards. He advocates meticulous checks across the whole production flow, from selecting premium PC and TPEE materials to molding, finishing and packaging.</p>
@@ -456,10 +466,11 @@
                 <span class="label">Phone</span>
                 <a class="value" href="tel:+8613930449578">0086 139 3044 9578</a>
             </div>
+            <!-- 记得把下面的邮箱换成你刚刚申请的企业邮箱哦！ -->
             <div class="contact-item">
-    <span class="label">Email</span>
-    <a class="value" href="mailto:ben@dailyhairclip.store">ben@dailyhairclip.store</a>
-</div>
+                <span class="label">Email</span>
+                <a class="value" href="mailto:ben@dailyhairclip.store">ben@dailyhairclip.store</a>
+            </div>
         </div>
         <a class="instagram" href="http://instagram.com/dailyhairclip" target="_blank" rel="noopener" aria-label="Instagram">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
