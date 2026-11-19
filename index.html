@@ -82,7 +82,7 @@ a {
   text-transform: uppercase;
   font-weight: 500;
   transition: color .25s;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.3); /* 防止白色图片上看不清 */
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3); 
 }
 .nav-links a:hover {
   color: var(--accent-soft);
@@ -195,7 +195,7 @@ a {
   background-position: center center;
   background-repeat: no-repeat;
   opacity: 0;
-  transition: opacity 1.5s ease-in-out; /* 平滑的淡入淡出 */
+  transition: opacity 1.5s ease-in-out;
   z-index: 1;
 }
 .slide.active {
@@ -527,11 +527,16 @@ footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spac
   }
   .nav-links li:hover .dropdown-content { transform: none; }
   .dropdown-content.active { display: block; }
-  .dropdown-content a { padding: 12px 24px; font-size: 0.8rem; color: #555 !important; }
+  .dropdown-content a { padding: 12px 24px; font-size: 0.8rem; color: #555 !important; border-bottom: none; }
   .dropdown-content a:hover { background: transparent; color: var(--accent) !important; }
 
-  .banner-slider { height: 65vh; min-height: 400px; }
-  .slider-dots { bottom: 20px; }
+  /* 移动端 Banner 保持 16:9 */
+  .banner-slider { 
+    height: auto; 
+    aspect-ratio: 16 / 9; 
+    min-height: auto; 
+  }
+  .slider-dots { bottom: 15px; }
   .dot { width: 8px; height: 8px; }
   
   .material-row, .material-row.reverse { grid-template-columns: 1fr; gap: 32px; }
@@ -552,7 +557,10 @@ footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spac
 }
 
 @media (max-width: 520px) {
-  .banner-slider { height: 55vh; }
+  .banner-slider { 
+    height: auto; 
+    aspect-ratio: 16 / 9; 
+  }
   .container { padding: 0 20px; }
 }
 </style>
@@ -584,12 +592,10 @@ footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spac
 
 <!-- Banner 轮播区 -->
 <header id="home" class="banner-slider">
-  <!-- 请确保有这三张图片，如果暂时没有，可以用原来的 banner.jpg 改名代替 -->
   <div class="slide active" style="background-image: url('banner1.jpg');"></div>
   <div class="slide" style="background-image: url('banner2.jpg');"></div>
   <div class="slide" style="background-image: url('banner3.jpg');"></div>
   
-  <!-- 轮播指示点 -->
   <div class="slider-dots">
     <div class="dot active" data-index="0"></div>
     <div class="dot" data-index="1"></div>
@@ -738,7 +744,7 @@ function nextSlide() {
 }
 
 function startSlideShow() {
-  slideInterval = setInterval(nextSlide, 5000); // 每 5 秒切换一次
+  slideInterval = setInterval(nextSlide, 5000); 
 }
 
 function resetSlideShow() {
@@ -746,16 +752,14 @@ function resetSlideShow() {
   startSlideShow();
 }
 
-// 点击指示点切换
 dots.forEach((dot, index) => {
   dot.addEventListener('click', () => {
     currentSlide = index;
     showSlide(currentSlide);
-    resetSlideShow(); // 切换后重新计时
+    resetSlideShow(); 
   });
 });
 
-// 启动轮播
 startSlideShow();
 
 
@@ -917,7 +921,6 @@ function renderProducts() {
   });
 }
 
-// 打开灯箱
 function openLightbox(seriesData, seriesIndex) {
   currentCategoryData = seriesData;
   currentSeriesIndex = seriesIndex;
@@ -928,13 +931,11 @@ function openLightbox(seriesData, seriesIndex) {
   document.body.style.overflow = 'hidden';
 }
 
-// 关闭灯箱
 function closeLightbox() {
   lightbox.classList.remove('active');
   document.body.style.overflow = '';
 }
 
-// 更新灯箱内容
 function updateLightboxContent() {
   const series = currentCategoryData[currentSeriesIndex];
   const currentImage = series.images[currentImgIndex];
@@ -968,7 +969,6 @@ function updateLightboxContent() {
   }, 100);
 }
 
-// 切换图片
 function changeImage(direction) {
   const series = currentCategoryData[currentSeriesIndex];
   currentImgIndex += direction;
@@ -980,11 +980,13 @@ function changeImage(direction) {
   updateLightboxContent();
 }
 
-// 事件绑定
+// ================= 导航栏交互 =================
+// 1. 移动端汉堡菜单开关
 navToggle.addEventListener('click', () => {
   nav.classList.toggle('open');
 });
 
+// 2. 导航栏滚动变色
 window.addEventListener('scroll', () => {
   if(window.scrollY > 80){
     nav.classList.add('scrolled');
@@ -993,30 +995,32 @@ window.addEventListener('scroll', () => {
   }
 });
 
+// 3. 移动端 Products 下拉逻辑
 const navProducts = document.getElementById('nav-products');
 const dropdownMenu = document.getElementById('dropdown-menu');
+
 navProducts.addEventListener('click', (e) => {
+  // 仅在移动端执行
   if (window.innerWidth <= 860) {
-    if (!dropdownMenu.classList.contains('active')) {
-      e.preventDefault(); 
-      dropdownMenu.classList.add('active');
-    } else {
-      dropdownMenu.classList.remove('active');
-    }
+    e.preventDefault(); // 阻止默认跳转到 #products
+    dropdownMenu.classList.toggle('active'); // 切换子菜单显示/隐藏
   }
 });
 
+// 4. 点击导航链接后自动收起菜单
 document.querySelectorAll('.nav-links a').forEach(link => {
   link.addEventListener('click', (e) => {
     if (window.innerWidth <= 860) {
-      if (e.target.id !== 'nav-products' || dropdownMenu.classList.contains('active')) {
+      // 如果点击的是子类目，或者非 Products 主类目，则收起菜单
+      if (link.closest('.dropdown-content') || link.id !== 'nav-products') {
         nav.classList.remove('open');
-        dropdownMenu.classList.remove('active'); 
+        dropdownMenu.classList.remove('active');
       }
     }
   });
 });
 
+// ================= 灯箱事件 =================
 closeBtn.addEventListener('click', closeLightbox);
 prevBtn.addEventListener('click', (e) => { e.stopPropagation(); changeImage(-1); });
 nextBtn.addEventListener('click', (e) => { e.stopPropagation(); changeImage(1); });
