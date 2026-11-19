@@ -1009,6 +1009,7 @@ function updateLightboxContent() {
   
   lbTitle.textContent = series.title;
   lbDesc.textContent = series.desc;
+  
   thumbnailContainer.innerHTML = '';
   series.images.forEach((img, idx) => {
     const thumb = document.createElement('img');
