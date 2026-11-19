@@ -52,21 +52,20 @@ a {
   max-width: 800px;
 }
 
-/* ========== 【新增】内容保护：禁止选中、拖拽、长按菜单 ========== */
+/* ========== 内容保护：禁止选中、拖拽、长按菜单 ========== */
 html, body {
-  -webkit-touch-callout: none;      /* iOS 长按不弹保存菜单 */
+  -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
 }
-/* 输入框仍可正常输入（以后加表单也不会受影响） */
 input, textarea, select {
   -webkit-user-select: text;
   user-select: text;
 }
 img {
-  -webkit-user-drag: none;          /* 图片不可拖拽 */
+  -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;
   -o-user-drag: none;
@@ -389,7 +388,7 @@ transform: scale(1.04);
 .product-info h3 { font-size: 1.1rem; font-weight: 400; color: var(--ink); margin-bottom: 6px; letter-spacing: 0.02em; }
 .product-info p { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; }
 
-/* ========== 全屏画廊/灯箱【悬浮信息栏】 ========== */
+/* ========== 全屏画廊/灯箱【桌面端悬浮信息栏】 ========== */
 .lightbox {
 position: fixed;
 top: 0;
@@ -482,7 +481,7 @@ stroke-width: 1.5;
 fill: none;
 }
 
-/* 悬浮底部信息栏 */
+/* 悬浮底部信息栏（桌面端） */
 .lightbox-footer {
 position: absolute;
 bottom: 0;
@@ -586,6 +585,14 @@ transition: opacity 0.3s ease, transform 0.3s ease;
 .nav-links > li { width: 100%; }
 .nav-links a { color: #111 !important; padding: 16px 24px; display: block; font-size: 0.9rem; border-bottom: 1px solid #eee; text-align: center; text-shadow: none;}
 
+/* ===== 修复1：Products 在汉堡菜单中整体居中（文字+箭头） ===== */
+#nav-products {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
 .dropdown-content {
 position: static;
 transform: none;
@@ -598,7 +605,7 @@ padding: 0;
 }
 .nav-links li:hover .dropdown-content { transform: none; }
 .dropdown-content.active { display: block; }
-.dropdown-content a { padding: 12px 24px; font-size: 0.8rem; color: #555 !important; border-bottom: none; }
+.dropdown-content a { padding: 12px 24px; font-size: 0.8rem; color: #555 !important; border-bottom: none; text-align: center; }
 .dropdown-content a:hover { background: transparent; color: var(--accent) !important; }
 
 /* 移动端 Banner 保持 16:9 */
@@ -619,16 +626,34 @@ min-height: auto;
 .products-grid { grid-template-columns: repeat(2, 1fr); gap: 30px 16px; }
 section { padding: 70px 0; }
 
-/* 移动端灯箱恢复原有布局，不悬浮 */
-.lightbox-main { padding: 0; }
+/* ===== 修复3：移动端灯箱改为上下布局（图在上，文字缩略图在下） ===== */
+.lightbox-main {
+  padding: 60px 0 0;
+  flex-direction: column;      /* 关键：纵向排列 */
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+}
+.lightbox-main > img {
+  max-width: 100%;
+  max-height: 58vh;            /* 给下方文字缩略图留出空间 */
+  width: auto;
+  height: auto;
+  flex-shrink: 1;
+  min-height: 0;
+  margin: 0 auto;
+}
 .nav-btn { display: none; }
 .lightbox-footer {
-  position: relative;
+  position: relative;          /* 回到文档流，位于图片正下方 */
+  width: 100%;
   padding: 15px 20px 30px;
   background: transparent;
+  flex-shrink: 0;
 }
 .lightbox-info h3 { font-size: 1.2rem; }
 .lightbox-info p { font-size: 0.7rem; margin-bottom: 15px; }
+.thumbnail-container { justify-content: flex-start; }
 .close-btn { top: 20px; right: 20px; width: 24px; height: 24px; }
 }
 
@@ -741,7 +766,7 @@ section { padding: 70px 0; }
       <svg viewBox="0 0 24 24"><path d="M9 18L15 12L9 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
 
-    <!-- 悬浮底部信息栏 -->
+    <!-- 信息栏：桌面悬浮于图底部 / 移动端位于图片下方 -->
     <div class="lightbox-footer" id="lightbox-footer">
       <div class="lightbox-info">
         <h3 id="lightbox-title"></h3>
@@ -1098,6 +1123,16 @@ document.querySelectorAll('.nav-links a').forEach(link => {
   });
 });
 
+// ===== 修复2【新增】：点击汉堡菜单以外的页面区域，自动收起菜单 =====
+document.addEventListener('click', (e) => {
+  if (window.innerWidth <= 860 && nav.classList.contains('open')) {
+    if (!nav.contains(e.target)) {
+      nav.classList.remove('open');
+      dropdownMenu.classList.remove('active');
+    }
+  }
+});
+
 // ================= 灯箱事件 =================
 closeBtn.addEventListener('click', closeLightbox);
 prevBtn.addEventListener('click', (e) => { e.stopPropagation(); changeImage(-1); });
@@ -1163,24 +1198,23 @@ function handleSwipe() {
 })();
 
 /* ==========================================
-   4. 【新增】内容保护：禁止复制/粘贴/右键/拖拽/下载
+   4. 内容保护：禁止复制/粘贴/右键/拖拽/下载
    ========================================== */
 (function protectContent() {
 
-  // 判断是否是可输入元素（以后加表单也不影响正常填写）
   const isEditable = (el) => {
     if (!el) return false;
     const tag = el.tagName;
     return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || el.isContentEditable;
   };
 
-  // ---------- 1. 屏蔽右键菜单（含移动端长按图片的保存菜单） ----------
+  // 1. 屏蔽右键菜单（含移动端长按图片的保存菜单）
   document.addEventListener('contextmenu', function (e) {
     e.preventDefault();
     return false;
   }, false);
 
-  // ---------- 2. 屏蔽拖拽（图片无法拖到桌面/新标签页） ----------
+  // 2. 屏蔽拖拽
   document.addEventListener('dragstart', function (e) {
     e.preventDefault();
     return false;
@@ -1190,10 +1224,10 @@ function handleSwipe() {
     return false;
   }, false);
 
-  // ---------- 3. 屏蔽复制、剪切、粘贴 ----------
+  // 3. 屏蔽复制、剪切、粘贴
   ['copy', 'cut', 'paste'].forEach(function (type) {
     document.addEventListener(type, function (e) {
-      if (isEditable(e.target)) return;  // 输入框内保留正常粘贴
+      if (isEditable(e.target)) return;
       e.preventDefault();
       if ((type === 'copy' || type === 'cut') && e.clipboardData) {
         try {
@@ -1204,25 +1238,22 @@ function handleSwipe() {
     }, false);
   });
 
-  // ---------- 4. 屏蔽快捷键：复制/剪切/粘贴/全选/保存/打印/查看源码 ----------
+  // 4. 屏蔽快捷键：复制/剪切/粘贴/全选/保存/打印/查看源码
   document.addEventListener('keydown', function (e) {
     const key = (e.key || '').toLowerCase();
     const ctrl = e.ctrlKey || e.metaKey;
     if (!ctrl) return;
 
-    // 禁止下载与被保存：Ctrl+S 保存网页、Ctrl+P 打印成PDF
     if (key === 's' || key === 'p') {
       e.preventDefault();
       e.stopPropagation();
       return false;
     }
-    // 禁止复制、剪切、粘贴、全选（输入框内除外）
     if ((key === 'c' || key === 'x' || key === 'v' || key === 'a') && !isEditable(e.target)) {
       e.preventDefault();
       e.stopPropagation();
       return false;
     }
-    // 禁止查看源码 Ctrl+U
     if (key === 'u') {
       e.preventDefault();
       e.stopPropagation();
@@ -1230,14 +1261,14 @@ function handleSwipe() {
     }
   }, true);
 
-  // ---------- 5. 屏蔽图片上的鼠标默认行为（防止拖存） ----------
+  // 5. 屏蔽图片上的鼠标默认行为（防止拖存）
   document.addEventListener('mousedown', function (e) {
     if (e.target && e.target.tagName === 'IMG') {
       e.preventDefault();
     }
   }, false);
 
-  // ---------- 6. 移动端长按兜底（安卓长按存图 / iOS 长按预览） ----------
+  // 6. 移动端长按兜底
   let pressTimer = null;
   document.addEventListener('touchstart', function (e) {
     const t = e.target;
@@ -1257,7 +1288,7 @@ function handleSwipe() {
   document.addEventListener('touchmove', clearPress, { passive: true });
   document.addEventListener('touchcancel', clearPress, { passive: true });
 
-  // ---------- 7. 选中文本自动清空（双保险） ----------
+  // 7. 选中文本自动清空（双保险）
   document.addEventListener('selectstart', function (e) {
     if (!isEditable(e.target)) {
       e.preventDefault();
