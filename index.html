@@ -28,7 +28,6 @@ html {
   padding: 0;
   box-sizing: border-box;
 }
-/* 全站统一 Georgia 衬线字体 */
 body {
   font-family: Georgia, 'Times New Roman', Times, serif;
   background: var(--bg);
@@ -53,7 +52,7 @@ a {
   max-width: 800px;
 }
 
-/* ========== 导航栏（固定在顶部，原有变色逻辑保留） ========== */
+/* ========== 导航栏 ========== */
 .nav {
   position: fixed;
   top: 0;
@@ -70,6 +69,10 @@ a {
   display: flex;
   gap: 36px;
   list-style: none;
+  align-items: center;
+}
+.nav-links > li {
+  position: relative;
 }
 .nav-links a {
   color: rgba(255,255,255,.95);
@@ -83,6 +86,40 @@ a {
 .nav-links a:hover {
   color: var(--accent-soft);
 }
+
+/* 下拉菜单 (PC端) */
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: rgba(250,250,250,.98);
+  box-shadow: 0 10px 30px rgba(0,0,0,.1);
+  padding: 12px 0;
+  list-style: none;
+  min-width: 220px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+.nav-links li:hover .dropdown-content {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+.dropdown-content a {
+  color: #111 !important;
+  display: block;
+  padding: 10px 20px;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+}
+.dropdown-content a:hover {
+  background: #f0f0f0;
+  color: var(--accent) !important;
+}
+
 .nav.scrolled {
   background: rgba(250,250,250,.98);
   backdrop-filter: blur(10px);
@@ -95,6 +132,8 @@ a {
 .nav.scrolled .nav-links a:hover {
   color: var(--accent);
 }
+
+/* 汉堡菜单按钮 */
 .nav-toggle {
   display: none;
   width: 44px;
@@ -168,70 +207,54 @@ section {
 }
 
 /* ========== About & Materials & Founder & Contact ========== */
-.about {
-  background: var(--bg);
-}
-.about p {
-  color: var(--ink-soft);
-  font-size: 1rem;
-  margin-bottom: 24px;
-  text-align: justify;
-  line-height: 1.9;
-}
-.about .hi {
-  font-size: 1.4rem;
-  color: var(--ink);
-  margin-bottom: 28px;
-  text-align: left;
-}
-.about .signature {
-  text-align: right;
-  font-style: italic;
-  font-size: 1.2rem;
-  color: var(--ink);
-  margin-top: 16px;
-  margin-bottom: 0;
-}
-.materials {
-  background: var(--bg-alt);
-}
-.material-row {
-  display: grid;
-  grid-template-columns: 7fr 5fr;
-  gap: 90px;
-  align-items: center;
-  margin-bottom: 140px;
-}
-.material-row:last-child {
-  margin-bottom: 0;
-}
-.material-row.reverse .material-image {
-  order: 2;
-}
-.material-row.reverse {
-  grid-template-columns: 5fr 7fr;
-}
-.material-image img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  background: #e0e0e0;
-}
-.material-text h2 {
-  font-weight: 400;
-  font-size: clamp(1.8rem, 2.8vw, 2.3rem);
-  margin-bottom: 20px;
-  color: var(--ink);
-}
-.material-text p {
-  color: var(--ink-soft);
-  font-size: 1rem;
-  line-height: 1.9;
-}
+.about { background: var(--bg); }
+.about p { color: var(--ink-soft); font-size: 1rem; margin-bottom: 24px; text-align: justify; line-height: 1.9; }
+.about .hi { font-size: 1.4rem; color: var(--ink); margin-bottom: 28px; text-align: left; }
+.about .signature { text-align: right; font-style: italic; font-size: 1.2rem; color: var(--ink); margin-top: 16px; margin-bottom: 0; }
 
-/* ========== Products 网格（3:4 固定比例） ========== */
-.products {
-  background: var(--bg);
+.materials { background: var(--bg-alt); }
+.material-row { display: grid; grid-template-columns: 7fr 5fr; gap: 90px; align-items: center; margin-bottom: 140px; }
+.material-row:last-child { margin-bottom: 0; }
+.material-row.reverse .material-image { order: 2; }
+.material-row.reverse { grid-template-columns: 5fr 7fr; }
+.material-image img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; background: #e0e0e0; }
+.material-text h2 { font-weight: 400; font-size: clamp(1.8rem, 2.8vw, 2.3rem); margin-bottom: 20px; color: var(--ink); }
+.material-text p { color: var(--ink-soft); font-size: 1rem; line-height: 1.9; }
+
+.founder { background: var(--bg-alt); }
+.founder-grid { display: grid; grid-template-columns: 5fr 7fr; gap: 80px; align-items: center; }
+.founder-image img { width: 100%; aspect-ratio: 6 / 9; object-fit: cover; background: #e0e0e0; }
+.founder-text .lead { font-size: 1.6rem; color: var(--ink); line-height: 1.5; margin-bottom: 24px; }
+.founder-text p { color: var(--ink-soft); font-size: 1rem; line-height: 1.9; margin-bottom: 20px; text-align: justify; }
+
+.contact { background: var(--bg); text-align: center; }
+.contact-list { max-width: 640px; margin: 0 auto; }
+.contact-item { padding: 24px 0; border-bottom: 1px solid var(--line); }
+.contact-item:first-child { border-top: 1px solid var(--line); }
+.contact-item .label { display: block; font-size: 0.7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; font-weight: 600; }
+.contact-item .value { font-size: 1.1rem; color: var(--ink); text-decoration: none; word-break: break-all; }
+.instagram { display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; margin-top: 48px; border: 1px solid var(--line); border-radius: 50%; color: var(--ink); transition: all .25s; }
+.instagram:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-3px); }
+footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); border-top: 1px solid var(--line); font-weight: 500; }
+
+/* ========== Products 分类与网格 ========== */
+.products { background: var(--bg); }
+.category-block {
+  margin-bottom: 100px;
+  scroll-margin-top: 120px; /* 保证跳转后标题不被导航栏遮挡 */
+}
+.category-block:last-child {
+  margin-bottom: 0;
+}
+.category-title {
+  font-size: 1.6rem;
+  font-weight: 400;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 16px;
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 .products-grid {
   display: grid;
@@ -260,119 +283,18 @@ section {
 .product-card:hover .product-img-wrapper img {
   transform: scale(1.04);
 }
-.product-info {
-  text-align: center;
-}
-.product-info h3 {
-  font-size: 1.1rem;
-  font-weight: 400;
-  color: var(--ink);
-  margin-bottom: 6px;
-  letter-spacing: 0.02em;
-}
-.product-info p {
-  font-size: 0.7rem;
-  color: var(--muted);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  font-weight: 500;
-}
+.product-info { text-align: center; }
+.product-info h3 { font-size: 1.1rem; font-weight: 400; color: var(--ink); margin-bottom: 6px; letter-spacing: 0.02em; }
+.product-info p { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; }
 
-.founder {
-  background: var(--bg-alt);
-}
-.founder-grid {
-  display: grid;
-  grid-template-columns: 5fr 7fr;
-  gap: 80px;
-  align-items: center;
-}
-.founder-image img {
-  width: 100%;
-  aspect-ratio: 6 / 9;
-  object-fit: cover;
-  background: #e0e0e0;
-}
-.founder-text .lead {
-  font-size: 1.6rem;
-  color: var(--ink);
-  line-height: 1.5;
-  margin-bottom: 24px;
-}
-.founder-text p {
-  color: var(--ink-soft);
-  font-size: 1rem;
-  line-height: 1.9;
-  margin-bottom: 20px;
-  text-align: justify;
-}
-
-.contact {
-  background: var(--bg);
-  text-align: center;
-}
-.contact-list {
-  max-width: 640px;
-  margin: 0 auto;
-}
-.contact-item {
-  padding: 24px 0;
-  border-bottom: 1px solid var(--line);
-}
-.contact-item:first-child {
-  border-top: 1px solid var(--line);
-}
-.contact-item .label {
-  display: block;
-  font-size: 0.7rem;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 8px;
-  font-weight: 600;
-}
-.contact-item .value {
-  font-size: 1.1rem;
-  color: var(--ink);
-  text-decoration: none;
-  word-break: break-all;
-}
-.instagram {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  margin-top: 48px;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  color: var(--ink);
-  transition: all .25s;
-}
-.instagram:hover {
-  color: var(--accent);
-  border-color: var(--accent);
-  transform: translateY(-3px);
-}
-footer {
-  text-align: center;
-  padding: 40px 20px;
-  font-size: 0.75rem;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--muted);
-  border-top: 1px solid var(--line);
-  font-weight: 500;
-}
-
-/* ========== 画廊/灯箱 Lightbox 【大图强制3:4】 ========== */
+/* ========== 全屏画廊/灯箱 ========== */
 .lightbox {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(12, 12, 12, 0.98);
+  background: rgba(10, 10, 10, 0.98);
   z-index: 9999;
   display: flex;
   flex-direction: column;
@@ -384,6 +306,8 @@ footer {
   opacity: 1;
   visibility: visible;
 }
+
+/* 关闭按钮 */
 .close-btn {
   position: absolute;
   top: 30px;
@@ -408,68 +332,52 @@ footer {
   height: 1px;
   background: #fff;
 }
-.close-btn::before {
-  transform: rotate(45deg);
-}
-.close-btn::after {
-  transform: rotate(-45deg);
-}
-.lightbox-content {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-  padding: 60px 20px 40px;
-  align-items: center;
-  justify-content: center;
-}
-.main-image-container {
-  position: relative;
-  width: 100%;
-  max-width: 700px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.close-btn::before { transform: rotate(45deg); }
+.close-btn::after { transform: rotate(-45deg); }
+
+/* 顶部大图区 (占满剩余空间) */
+.lightbox-main {
   flex: 1;
-  min-height: 0;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 40px; /* 四周留点空白，点击此空白可退出 */
 }
-/* 灯箱大图固定3:4，cover居中裁切 */
-.main-image-container img {
-  aspect-ratio: 3 / 4;
-  width: auto;
-  height: auto;
+/* 全屏大图不强制比例，完全包含（contain） */
+.lightbox-main img {
   max-width: 100%;
-  max-height: 65vh;
-  object-fit: cover;
-  object-position: center center;
+  max-height: 100%;
+  object-fit: contain;
   transition: opacity 0.4s ease;
   box-shadow: 0 10px 40px rgba(0,0,0,0.5);
 }
+
+/* 左右箭头 */
 .nav-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: transparent;
-  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
   cursor: pointer;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0.5;
-  transition: opacity 0.3s, transform 0.3s;
+  opacity: 0.6;
+  transition: all 0.3s;
   z-index: 10;
 }
 .nav-btn:hover {
   opacity: 1;
+  background: rgba(255, 255, 255, 0.2);
 }
-.prev-btn {
-  left: -60px;
-}
-.next-btn {
-  right: -60px;
-}
+.prev-btn { left: 30px; }
+.next-btn { right: 30px; }
 .nav-btn svg {
   width: 24px;
   height: 24px;
@@ -477,224 +385,138 @@ footer {
   stroke-width: 1.5;
   fill: none;
 }
-.nav-btn:hover.prev-btn {
-  transform: translateY(-50%) translateX(-5px);
-}
-.nav-btn:hover.next-btn {
-  transform: translateY(-50%) translateX(5px);
-}
-.lightbox-info {
+
+/* 底部文字与缩略图区 */
+.lightbox-footer {
+  width: 100%;
+  padding: 20px 40px 40px;
+  background: linear-gradient(to top, rgba(10, 10, 10, 1) 0%, rgba(10, 10, 10, 0.8) 70%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  color: #fff;
-  margin-top: 30px;
-  max-width: 600px;
-  padding: 0 20px;
 }
 .lightbox-info h3 {
+  color: #fff;
   font-size: 1.5rem;
-  margin-bottom: 10px;
   font-weight: 400;
+  margin-bottom: 8px;
   letter-spacing: 0.02em;
 }
 .lightbox-info p {
-  font-size: 0.8rem;
   color: #999;
+  font-size: 0.8rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
+  margin-bottom: 24px;
 }
+
+/* 缩略图列表 */
 .thumbnail-container {
   display: flex;
   gap: 15px;
-  margin-top: 30px;
   overflow-x: auto;
-  padding: 10px 20px;
+  padding-bottom: 10px;
   max-width: 100%;
   scrollbar-width: none;
 }
-.thumbnail-container::-webkit-scrollbar {
-  display: none;
-}
+.thumbnail-container::-webkit-scrollbar { display: none; }
 .thumbnail-container img {
   width: 55px;
-  height: 73px; /* 55:73 = 3:4 */
+  height: 73px;
   object-fit: cover;
-  object-position: center center;
   cursor: pointer;
   border: 1px solid transparent;
   opacity: 0.4;
   transition: all 0.3s;
 }
-.thumbnail-container img:hover {
-  opacity: 0.8;
-}
+.thumbnail-container img:hover { opacity: 0.8; }
 .thumbnail-container img.active {
   border-color: #fff;
   opacity: 1;
-  transform: scale(1.05);
+  transform: translateY(-5px); /* 选中时微微上浮 */
 }
 
 /* ========== 响应式 ========== */
 @media (max-width: 1024px) {
-  html {
-    font-size: 18px;
-  }
-  .container {
-    padding: 0 32px;
-  }
-  .nav {
-    padding: 24px 32px;
-  }
-  .nav.scrolled {
-    padding: 14px 32px;
-  }
-  .nav-links {
-    gap: 24px;
-  }
-  .products-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 40px 24px;
-  }
-  .material-row, .material-row.reverse {
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-  }
-  .founder-grid {
-    gap: 40px;
-  }
-  section {
-    padding: 100px 0;
-  }
-  .prev-btn {
-    left: -20px;
-  }
-  .next-btn {
-    right: -20px;
-  }
+  html { font-size: 18px; }
+  .container { padding: 0 32px; }
+  .nav { padding: 24px 32px; }
+  .nav.scrolled { padding: 14px 32px; }
+  .nav-links { gap: 24px; }
+  .products-grid { grid-template-columns: repeat(2, 1fr); gap: 40px 24px; }
+  .material-row, .material-row.reverse { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .founder-grid { gap: 40px; }
+  section { padding: 100px 0; }
+  .prev-btn { left: 15px; }
+  .next-btn { right: 15px; }
 }
+
 @media (max-width: 860px) {
-  html {
-    font-size: 16px;
-  }
-  .nav {
-    padding: 16px 24px;
-  }
-  .nav.scrolled {
-    padding: 12px 24px;
-  }
-  .nav-toggle {
-    display: flex;
-  }
+  html { font-size: 16px; }
+  .nav { padding: 16px 24px; }
+  .nav.scrolled { padding: 12px 24px; }
+  .nav-toggle { display: flex; }
+  
+  /* 移动端导航全屏下拉 */
   .nav-links {
     position: absolute;
-    top: calc(100% + 8px);
-    right: 24px;
-    left: 24px;
+    top: 100%;
+    left: 0;
+    width: 100%;
     flex-direction: column;
     gap: 0;
     background: rgba(250,250,250,.98);
     box-shadow: 0 14px 40px rgba(0,0,0,.15);
-    padding: 8px 0;
+    padding: 10px 0 20px;
     display: none;
-    text-align: center;
     opacity: 0;
     transform: translateY(-10px);
     transition: opacity 0.3s ease, transform 0.3s ease;
   }
-  .nav.open .nav-links {
-    display: flex;
+  .nav.open .nav-links { display: flex; opacity: 1; transform: translateY(0); }
+  
+  .nav-links > li { width: 100%; }
+  .nav-links a { color: #111 !important; padding: 16px 24px; display: block; font-size: 0.9rem; border-bottom: 1px solid #eee; text-align: center;}
+  
+  /* 移动端下拉菜单展开 */
+  .dropdown-content {
+    position: static;
+    transform: none;
+    box-shadow: none;
+    background: #f4f4f3;
     opacity: 1;
-    transform: translateY(0);
-  }
-  .nav-links a {
-    color: #111 !important;
-    padding: 16px 24px;
-    display: block;
-    font-size: 0.9rem;
-    border-bottom: 1px solid #eee;
-  }
-  .nav-links li:last-child a {
-    border-bottom: none;
-  }
-  .banner {
-    height: 65vh;
-    min-height: 400px;
-  }
-  .material-row, .material-row.reverse {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
-  .material-row.reverse .material-image {
-    order: 0;
-  }
-  .material-text p {
-    max-width: none;
-    text-align: left;
-  }
-  .founder-grid {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
-  .founder-image {
-    max-width: 420px;
-    margin: 0 auto;
-  }
-  .founder-text p {
-    text-align: left;
-  }
-  .products-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30px 16px;
-  }
-  .product-info h3 {
-    font-size: 1rem;
-  }
-  .product-info p {
-    font-size: 0.65rem;
-  }
-  section {
-    padding: 70px 0;
-  }
-  .about p {
-    text-align: left;
-  }
-  .lightbox-content {
-    padding-top: 80px;
-    padding-bottom: 20px;
-  }
-  .main-image-container img {
-    max-height: 45vh;
-  }
-  .nav-btn {
+    visibility: visible;
     display: none;
+    padding: 0;
   }
-  .lightbox-info {
-    margin-top: 20px;
-  }
-  .lightbox-info h3 {
-    font-size: 1.3rem;
-  }
-  .thumbnail-container {
-    margin-top: 20px;
-    gap: 10px;
-  }
-  .thumbnail-container img {
-    width: 45px;
-    height: 60px;
-  }
-  .close-btn {
-    top: 20px;
-    right: 20px;
-    width: 24px;
-    height: 24px;
-  }
+  .nav-links li:hover .dropdown-content { transform: none; }
+  .dropdown-content.active { display: block; }
+  .dropdown-content a { padding: 12px 24px; font-size: 0.8rem; color: #555 !important; }
+  .dropdown-content a:hover { background: transparent; color: var(--accent) !important; }
+
+  .banner { height: 65vh; min-height: 400px; }
+  .material-row, .material-row.reverse { grid-template-columns: 1fr; gap: 32px; }
+  .material-row.reverse .material-image { order: 0; }
+  .founder-grid { grid-template-columns: 1fr; gap: 32px; }
+  .founder-image { max-width: 420px; margin: 0 auto; }
+  
+  .category-title { font-size: 1.3rem; margin-bottom: 24px; }
+  .products-grid { grid-template-columns: repeat(2, 1fr); gap: 30px 16px; }
+  section { padding: 70px 0; }
+  
+  /* 移动端画廊 */
+  .lightbox-main { padding: 0; } /* 移动端全屏展示图片 */
+  .nav-btn { display: none; } /* 移动端隐藏箭头，全靠滑动 */
+  .lightbox-footer { padding: 15px 20px 30px; }
+  .lightbox-info h3 { font-size: 1.2rem; }
+  .lightbox-info p { font-size: 0.7rem; margin-bottom: 15px; }
+  .close-btn { top: 20px; right: 20px; width: 24px; height: 24px; }
 }
+
 @media (max-width: 520px) {
-  .banner {
-    height: 55vh;
-  }
-  .container {
-    padding: 0 20px;
-  }
+  .banner { height: 55vh; }
+  .container { padding: 0 20px; }
 }
 </style>
 </head>
@@ -704,7 +526,18 @@ footer {
   <ul class="nav-links">
     <li><a href="#home">Home</a></li>
     <li><a href="#about">About</a></li>
-    <li><a href="#products">Products</a></li>
+    <li>
+      <a href="#products" id="nav-products">Products</a>
+      <!-- 下拉子目录 -->
+      <ul class="dropdown-content" id="dropdown-menu">
+        <li><a href="#cat-pc">PC HAIR CLAW</a></li>
+        <li><a href="#cat-acetate">ACETATE HAIR CLAW</a></li>
+        <li><a href="#cat-tpee">TPEE HAIR CLAW</a></li>
+        <li><a href="#cat-creative">CREATIVE HAIR CLAW</a></li>
+        <li><a href="#cat-charming">CHARMING HAIR CLIP</a></li>
+        <li><a href="#cat-others">OTHERS</a></li>
+      </ul>
+    </li>
     <li><a href="#founder">Meet the Founder</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -753,34 +586,37 @@ footer {
       <div class="material-text">
         <h2>TPEE Hair Claw</h2>
         <p>Made with flexible TPEE for a gentle, comfortable grip. The material offers outstanding resilience, so the clip holds securely while feeling light and easy to wear.</p>
-  </div>
-</div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- Products 网格区 -->
+<!-- Products 动态渲染区域 -->
 <section id="products" class="products">
   <div class="container">
     <span class="section-label">Selected Pieces</span>
-    <h2 class="section-title">Products</h2>
-    <!-- 产品由 JS 动态渲染到这里 -->
-    <div class="products-grid" id="products-grid"></div>
+    <h2 class="section-title">Our Collections</h2>
+    <div id="products-container"></div>
   </div>
 </section>
 
-<!-- Lightbox 画廊 -->
+<!-- 全屏画廊 -->
 <div id="lightbox" class="lightbox">
   <div class="close-btn" id="close-btn" aria-label="Close"></div>
-  <div class="lightbox-content">
-    <div class="main-image-container">
-      <button class="nav-btn prev-btn" id="prev-btn">
-        <svg viewBox="0 0 24 24"><path d="M15 18L9 12L15 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <img id="lightbox-img" src="" alt="Product Preview">
-      <button class="nav-btn next-btn" id="next-btn">
-        <svg viewBox="0 0 24 24"><path d="M9 18L15 12L9 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-    </div>
+  
+  <!-- 顶部大图区（点击空白退出） -->
+  <div class="lightbox-main" id="lightbox-main">
+    <button class="nav-btn prev-btn" id="prev-btn">
+      <svg viewBox="0 0 24 24"><path d="M15 18L9 12L15 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <img id="lightbox-img" src="" alt="Product Preview">
+    <button class="nav-btn next-btn" id="next-btn">
+      <svg viewBox="0 0 24 24"><path d="M9 18L15 12L9 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+
+  <!-- 底部信息区 -->
+  <div class="lightbox-footer" id="lightbox-footer">
     <div class="lightbox-info">
       <h3 id="lightbox-title"></h3>
       <p id="lightbox-desc"></p>
@@ -838,60 +674,113 @@ footer {
 <footer>© 2025 Luquan Gewu Zhixiang E-commerce Company. All rights reserved.</footer>
 
 <script>
-/* ========================================== 产品数据配置区（未来只需修改这里） ========================================== */
-const productSeries = [
+/* ==========================================
+   产品数据分类配置区（未来在这里增删改查）
+   ========================================== */
+const productCategories = [
   {
-    title: "Classic Tortoiseshell Series",
-    desc: "Timeless patterns for everyday elegance.",
-    images: [
-      { url: "product1.jpg", colorName: "Amber Tortoise" },
-      { url: "product2.jpg", colorName: "Dark Tortoise" },
-      { url: "product3.jpg", colorName: "Light Tortoise" }
+    id: "cat-pc",
+    title: "PC HAIR CLAW",
+    series: [
+      {
+        title: "Premium PC Collection",
+        desc: "High-gloss polycarbonate for a refined look.",
+        images: [
+          { url: "product7.jpg", colorName: "Glossy Caramel" },
+          { url: "product8.jpg", colorName: "Glossy Deep Brown" },
+          { url: "product9.jpg", colorName: "Glossy Grey" }
+        ]
+      },
+      {
+        title: "Matte PC Series",
+        desc: "Smooth matte finish in muted tones.",
+        images: [
+          { url: "product4.jpg", colorName: "Matte Black" },
+          { url: "product5.jpg", colorName: "Matte Ivory" }
+        ]
+      }
     ]
   },
   {
-    title: "Matte Minimalist Series",
-    desc: "Smooth matte finish in muted tones.",
-    images: [
-      { url: "product4.jpg", colorName: "Matte Black" },
-      { url: "product5.jpg", colorName: "Matte Ivory" },
-      { url: "product6.jpg", colorName: "Matte Sand" }
+    id: "cat-acetate",
+    title: "ACETATE HAIR CLAW",
+    series: [
+      {
+        title: "Classic Tortoiseshell",
+        desc: "Timeless patterns for everyday elegance.",
+        images: [
+          { url: "product1.jpg", colorName: "Amber Tortoise" },
+          { url: "product2.jpg", colorName: "Dark Tortoise" },
+          { url: "product3.jpg", colorName: "Light Tortoise" }
+        ]
+      }
     ]
   },
   {
-    title: "Premium PC Collection",
-    desc: "High-gloss polycarbonate for a refined look.",
-    images: [
-      { url: "product7.jpg", colorName: "Glossy Caramel" },
-      { url: "product8.jpg", colorName: "Glossy Deep Brown" },
-      { url: "product9.jpg", colorName: "Glossy Grey" }
+    id: "cat-tpee",
+    title: "TPEE HAIR CLAW",
+    series: [
+      {
+        title: "Flexible TPEE Claws",
+        desc: "Gentle, comfortable grip for all hair types.",
+        images: [
+          { url: "product10.jpg", colorName: "Soft Cream" },
+          { url: "product11.jpg", colorName: "Soft Grey" },
+          { url: "product12.jpg", colorName: "Soft Charcoal" }
+        ]
+      }
     ]
   },
   {
-    title: "Flexible TPEE Claws",
-    desc: "Gentle, comfortable grip for all hair types.",
-    images: [
-      { url: "product10.jpg", colorName: "Soft Cream" },
-      { url: "product11.jpg", colorName: "Soft Grey" },
-      { url: "product12.jpg", colorName: "Soft Charcoal" }
+    id: "cat-creative",
+    title: "CREATIVE HAIR CLAW",
+    series: [
+      {
+        title: "Creative Shapes",
+        desc: "Unique designs for standout styles.",
+        images: [
+          { url: "product4.jpg", colorName: "Matte Sand" },
+          { url: "product6.jpg", colorName: "Matte Ivory" }
+        ]
+      }
+    ]
+  },
+  {
+    id: "cat-charming",
+    title: "CHARMING HAIR CLIP",
+    series: [
+      {
+        title: "Charming Mini Clips",
+        desc: "Delicate clips for subtle accents.",
+        images: [
+          { url: "product5.jpg", colorName: "Soft Black" },
+          { url: "product8.jpg", colorName: "Deep Brown" }
+        ]
+      }
+    ]
+  },
+  {
+    id: "cat-others",
+    title: "OTHERS",
+    series: [
+      {
+        title: "Miscellaneous Accessories",
+        desc: "Explore our other premium offerings.",
+        images: [
+          { url: "product11.jpg", colorName: "Soft Grey" },
+          { url: "product12.jpg", colorName: "Soft Charcoal" }
+        ]
+      }
     ]
   }
 ];
-/* ========================================== 导航滚动变色JS（保留原有逻辑） ========================================== */
+
+/* ==========================================
+   页面渲染与交互逻辑（无需修改）
+   ========================================== */
 const nav = document.getElementById('nav');
 const navToggle = document.getElementById('navToggle');
-navToggle.addEventListener('click', ()=>{
-  nav.classList.toggle('open');
-});
-window.addEventListener('scroll', ()=>{
-  if(window.scrollY > 80){
-    nav.classList.add('scrolled');
-  }else{
-    nav.classList.remove('scrolled');
-  }
-});
-/* ========================================== 页面渲染与交互逻辑（无需修改） ========================================== */
-const gridContainer = document.getElementById('products-grid');
+const productsContainer = document.getElementById('products-container');
 const lightbox = document.getElementById('lightbox');
 const lbImg = document.getElementById('lightbox-img');
 const lbTitle = document.getElementById('lightbox-title');
@@ -900,32 +789,59 @@ const thumbnailContainer = document.getElementById('thumbnail-container');
 const closeBtn = document.getElementById('close-btn');
 const prevBtn = document.getElementById('prev-btn');
 const nextBtn = document.getElementById('next-btn');
+const lightboxMain = document.getElementById('lightbox-main');
+
 let currentSeriesIndex = 0;
 let currentImgIndex = 0;
+let currentCategoryData = null; // 当前分类的数据
 
-// 1. 初始化网格
-function renderGrid() {
-  productSeries.forEach((series, index) => {
-    const card = document.createElement('div');
-    card.className = 'product-card';
-    card.innerHTML = `
-      <div class="product-img-wrapper">
-        <img src="${series.images[0].url}" alt="${series.title}" loading="lazy">
-      </div>
-      <div class="product-info">
-        <h3>${series.title}</h3>
-        <p>${series.images.length} Colors Available</p>
-      </div>
-    `;
-    card.addEventListener('click', () => openLightbox(index));
-    gridContainer.appendChild(card);
+// 1. 初始化产品网格渲染
+function renderProducts() {
+  productCategories.forEach(cat => {
+    // 创建分类区块
+    const block = document.createElement('div');
+    block.className = 'category-block';
+    block.id = cat.id;
+    
+    // 分类标题
+    const title = document.createElement('h3');
+    title.className = 'category-title';
+    title.textContent = cat.title;
+    block.appendChild(title);
+
+    // 网格容器
+    const grid = document.createElement('div');
+    grid.className = 'products-grid';
+
+    // 渲染该分类下的系列
+    cat.series.forEach((series, sIdx) => {
+      const card = document.createElement('div');
+      card.className = 'product-card';
+      card.innerHTML = `
+        <div class="product-img-wrapper">
+          <img src="${series.images[0].url}" alt="${series.title}" loading="lazy">
+        </div>
+        <div class="product-info">
+          <h3>${series.title}</h3>
+          <p>${series.images.length} Colors Available</p>
+        </div>
+      `;
+      // 点击打开灯箱，传入当前分类的数据和系列索引
+      card.addEventListener('click', () => openLightbox(cat.series, sIdx));
+      grid.appendChild(card);
+    });
+
+    block.appendChild(grid);
+    productsContainer.appendChild(block);
   });
 }
 
 // 2. 打开灯箱
-function openLightbox(seriesIndex) {
+function openLightbox(seriesData, seriesIndex) {
+  currentCategoryData = seriesData;
   currentSeriesIndex = seriesIndex;
   currentImgIndex = 0;
+  
   updateLightboxContent();
   lightbox.classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -939,27 +855,35 @@ function closeLightbox() {
 
 // 4. 更新灯箱内容
 function updateLightboxContent() {
-  const series = productSeries[currentSeriesIndex];
+  const series = currentCategoryData[currentSeriesIndex];
   const currentImage = series.images[currentImgIndex];
+  
+  // 图片淡出淡入
   lbImg.style.opacity = 0;
   setTimeout(() => {
     lbImg.src = currentImage.url;
     lbImg.style.opacity = 1;
   }, 200);
+  
   lbTitle.textContent = `${series.title} - ${currentImage.colorName}`;
   lbDesc.textContent = series.desc;
+  
+  // 渲染底部缩略图
   thumbnailContainer.innerHTML = '';
   series.images.forEach((img, idx) => {
     const thumb = document.createElement('img');
     thumb.src = img.url;
     thumb.alt = img.colorName;
     if (idx === currentImgIndex) thumb.classList.add('active');
-    thumb.addEventListener('click', () => {
+    thumb.addEventListener('click', (e) => {
+      e.stopPropagation(); // 防止点击缩略图触发背景关闭
       currentImgIndex = idx;
       updateLightboxContent();
     });
     thumbnailContainer.appendChild(thumb);
   });
+  
+  // 居中选中的缩略图
   setTimeout(() => {
     const activeThumb = thumbnailContainer.querySelector('.active');
     if(activeThumb) activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
@@ -968,7 +892,7 @@ function updateLightboxContent() {
 
 // 5. 切换图片
 function changeImage(direction) {
-  const series = productSeries[currentSeriesIndex];
+  const series = currentCategoryData[currentSeriesIndex];
   currentImgIndex += direction;
   if (currentImgIndex < 0) {
     currentImgIndex = series.images.length - 1;
@@ -978,15 +902,63 @@ function changeImage(direction) {
   updateLightboxContent();
 }
 
-// 事件绑定
+// 6. 事件绑定
+// 导航汉堡按钮
+navToggle.addEventListener('click', () => {
+  nav.classList.toggle('open');
+});
+
+// 导航滚动变色
+window.addEventListener('scroll', () => {
+  if(window.scrollY > 80){
+    nav.classList.add('scrolled');
+  } else {
+    nav.classList.remove('scrolled');
+  }
+});
+
+// 移动端下拉菜单展开/收起
+const navProducts = document.getElementById('nav-products');
+const dropdownMenu = document.getElementById('dropdown-menu');
+navProducts.addEventListener('click', (e) => {
+  if (window.innerWidth <= 860) {
+    // 如果是移动端且点击了Products，展开下拉菜单
+    if (!dropdownMenu.classList.contains('active')) {
+      e.preventDefault(); // 先阻止跳转，展开菜单
+      dropdownMenu.classList.add('active');
+    } else {
+      // 如果已经展开，再次点击就让它正常跳转
+      dropdownMenu.classList.remove('active');
+    }
+  }
+});
+
+// 移动端点击导航链接自动收起菜单
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', (e) => {
+    if (window.innerWidth <= 860) {
+      // 排除掉点击 Products 主标题展开菜单的那一次
+      if (e.target.id !== 'nav-products' || dropdownMenu.classList.contains('active')) {
+        nav.classList.remove('open');
+        dropdownMenu.classList.remove('active'); // 收起子菜单
+      }
+    }
+  });
+});
+
+// 画廊关闭与切换
 closeBtn.addEventListener('click', closeLightbox);
-prevBtn.addEventListener('click', () => changeImage(-1));
-nextBtn.addEventListener('click', () => changeImage(1));
-lightbox.addEventListener('click', (e) => {
-  if (e.target === lightbox || e.target.classList.contains('lightbox-content')) {
+prevBtn.addEventListener('click', (e) => { e.stopPropagation(); changeImage(-1); });
+nextBtn.addEventListener('click', (e) => { e.stopPropagation(); changeImage(1); });
+
+// 点击大图空白区域关闭
+lightboxMain.addEventListener('click', (e) => {
+  if (e.target === lightboxMain) {
     closeLightbox();
   }
 });
+
+// 键盘支持
 document.addEventListener('keydown', (e) => {
   if (!lightbox.classList.contains('active')) return;
   if (e.key === 'ArrowLeft') changeImage(-1);
@@ -994,28 +966,25 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeLightbox();
 });
 
-// 手机端滑动支持
+// 移动端滑动支持
 let touchStartX = 0;
 let touchEndX = 0;
-lightbox.addEventListener('touchstart', (e) => {
+lightboxMain.addEventListener('touchstart', (e) => {
   touchStartX = e.changedTouches[0].screenX;
 }, {passive: true});
-lightbox.addEventListener('touchend', (e) => {
+lightboxMain.addEventListener('touchend', (e) => {
   touchEndX = e.changedTouches[0].screenX;
   handleSwipe();
 }, {passive: true});
+
 function handleSwipe() {
   const swipeThreshold = 50;
-  if (touchEndX < touchStartX - swipeThreshold) {
-    changeImage(1);
-  }
-  if (touchEndX > touchStartX + swipeThreshold) {
-    changeImage(-1);
-  }
+  if (touchEndX < touchStartX - swipeThreshold) changeImage(1);
+  if (touchEndX > touchStartX + swipeThreshold) changeImage(-1);
 }
 
-// 初始化渲染
-renderGrid();
+// 启动
+renderProducts();
 </script>
 </body>
 </html>
