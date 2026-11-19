@@ -51,7 +51,6 @@ a {
 .container.narrow {
   max-width: 800px;
 }
-
 /* ========== 内容保护：禁止选中、拖拽、长按菜单 ========== */
 html, body {
   -webkit-touch-callout: none;
@@ -85,7 +84,6 @@ img {
   background: transparent;
   color: transparent;
 }
-
 /* ========== 导航栏 ========== */
 .nav {
 position: fixed;
@@ -121,7 +119,6 @@ text-shadow: 0 1px 3px rgba(0,0,0,0.3);
 .nav-links a:hover {
 color: var(--accent-soft);
 }
-
 /* ===== Products下拉箭头 ===== */
 #nav-products {
   display: inline-flex;
@@ -142,7 +139,6 @@ color: var(--accent-soft);
 #nav-products.arrow-up::after {
   transform: rotate(180deg);
 }
-
 /* 下拉菜单 (PC端) */
 .dropdown-content {
 position: absolute;
@@ -176,7 +172,6 @@ text-shadow: none;
 background: #f0f0f0;
 color: var(--accent) !important;
 }
-
 .nav.scrolled {
 background: rgba(250,250,250,.98);
 backdrop-filter: blur(10px);
@@ -190,7 +185,6 @@ text-shadow: none;
 .nav.scrolled .nav-links a:hover {
 color: var(--accent);
 }
-
 /* 汉堡菜单按钮 */
 .nav-toggle {
 display: none;
@@ -230,7 +224,6 @@ opacity: 0;
 .nav.open .nav-toggle span:nth-child(3) {
 transform: translateY(-6.5px) rotate(-45deg);
 }
-
 /* ========== Banner 轮播图 ========== */
 .banner-slider {
 position: relative;
@@ -283,7 +276,6 @@ background: rgba(255, 255, 255, 0.8);
 background: #fff;
 transform: scale(1.3);
 }
-
 /* ========== 通用区块 ========== */
 section {
 padding: 140px 0;
@@ -307,13 +299,11 @@ margin-bottom: 60px;
 letter-spacing: .02em;
 color: var(--ink);
 }
-
 /* ========== About & Materials & Founder & Contact ========== */
 .about { background: var(--bg); }
 .about p { color: var(--ink-soft); font-size: 1rem; margin-bottom: 24px; text-align: justify; line-height: 1.9; }
 .about .hi { font-size: 1.4rem; color: var(--ink); margin-bottom: 28px; text-align: left; }
 .about .signature { text-align: right; font-style: italic; font-size: 1.2rem; color: var(--ink); margin-top: 16px; margin-bottom: 0; }
-
 .materials { background: var(--bg-alt); }
 .material-row { display: grid; grid-template-columns: 7fr 5fr; gap: 90px; align-items: center; margin-bottom: 140px; }
 .material-row:last-child { margin-bottom: 0; }
@@ -322,13 +312,11 @@ color: var(--ink);
 .material-image img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; background: #e0e0e0; }
 .material-text h2 { font-weight: 400; font-size: clamp(1.8rem, 2.8vw, 2.3rem); margin-bottom: 20px; color: var(--ink); }
 .material-text p { color: var(--ink-soft); font-size: 1rem; line-height: 1.9; }
-
 .founder { background: var(--bg-alt); }
 .founder-grid { display: grid; grid-template-columns: 5fr 7fr; gap: 80px; align-items: center; }
 .founder-image img { width: 100%; aspect-ratio: 6 / 9; object-fit: cover; background: #e0e0e0; }
 .founder-text .lead { font-size: 1.6rem; color: var(--ink); line-height: 1.5; margin-bottom: 24px; }
 .founder-text p { color: var(--ink-soft); font-size: 1rem; line-height: 1.9; margin-bottom: 20px; text-align: justify; }
-
 .contact { background: var(--bg); text-align: center; }
 .contact-list { max-width: 640px; margin: 0 auto; }
 .contact-item { padding: 24px 0; border-bottom: 1px solid var(--line); }
@@ -338,7 +326,6 @@ color: var(--ink);
 .instagram { display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; margin-top: 48px; border: 1px solid var(--line); border-radius: 50%; color: var(--ink); transition: all .25s; }
 .instagram:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-3px); }
 footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); border-top: 1px solid var(--line); font-weight: 500; }
-
 /* ========== Products 分类与网格 ========== */
 .products { background: var(--bg); }
 .category-block {
@@ -388,7 +375,6 @@ transform: scale(1.04);
 .product-info { text-align: center; }
 .product-info h3 { font-size: 1.1rem; font-weight: 400; color: var(--ink); margin-bottom: 6px; letter-spacing: 0.02em; }
 .product-info p { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; }
-
 /* ========== 全屏画廊/灯箱【桌面端悬浮信息栏】 ========== */
 .lightbox {
 position: fixed;
@@ -434,7 +420,6 @@ background: #fff;
 }
 .close-btn::before { transform: rotate(45deg); }
 .close-btn::after { transform: rotate(-45deg); }
-
 .lightbox-main {
 flex: 1;
 position: relative;
@@ -442,11 +427,15 @@ display: flex;
 justify-content: center;
 align-items: center;
 width: 100%;
-padding: 40px;
+/* ===== 修改1：底部预留220px给文字+缩略图信息栏，图片不再被遮挡 ===== */
+padding: 40px 40px 220px;
 }
+/* ===== 修改2：大图固定上限600×800（3:4等比），矮屏自动再缩小，完整显示 ===== */
 .lightbox-main img {
-max-width: 100%;
-max-height: 100%;
+width: auto;
+height: auto;
+max-width: min(600px, calc(100vw - 160px));
+max-height: min(800px, calc(100vh - 280px));
 object-fit: contain;
 transition: opacity 0.4s ease;
 box-shadow: 0 10px 40px rgba(0,0,0,0.5);
@@ -481,7 +470,6 @@ stroke: #fff;
 stroke-width: 1.5;
 fill: none;
 }
-
 /* 悬浮底部信息栏（桌面端） */
 .lightbox-footer {
 position: absolute;
@@ -513,7 +501,6 @@ letter-spacing: 0.15em;
 text-transform: uppercase;
 margin-bottom: 24px;
 }
-
 /* 缩略图容器：支持鼠标拖拽滑动 */
 .thumbnail-container {
 display: flex;
@@ -545,7 +532,6 @@ border-color: #fff;
 opacity: 1;
 transform: translateY(-5px);
 }
-
 /* ========== 响应式 ========== */
 @media (max-width: 1024px) {
 html { font-size: 18px; }
@@ -560,13 +546,11 @@ section { padding: 100px 0; }
 .prev-btn { left: 15px; }
 .next-btn { right: 15px; }
 }
-
 @media (max-width: 860px) {
 html { font-size: 16px; }
 .nav { padding: 16px 24px; }
 .nav.scrolled { padding: 12px 24px; }
 .nav-toggle { display: flex; }
-
 .nav-links {
 position: absolute;
 top: 100%;
@@ -585,7 +569,6 @@ transition: opacity 0.3s ease, transform 0.3s ease;
 .nav.open .nav-links { display: flex; opacity: 1; transform: translateY(0); }
 .nav-links > li { width: 100%; }
 .nav-links a { color: #111 !important; padding: 16px 24px; display: block; font-size: 0.9rem; border-bottom: 1px solid #eee; text-align: center; text-shadow: none;}
-
 /* Products 在汉堡菜单中整体居中（文字+箭头） */
 #nav-products {
   display: flex;
@@ -593,7 +576,6 @@ transition: opacity 0.3s ease, transform 0.3s ease;
   align-items: center;
   width: 100%;
 }
-
 .dropdown-content {
 position: static;
 transform: none;
@@ -608,7 +590,6 @@ padding: 0;
 .dropdown-content.active { display: block; }
 .dropdown-content a { padding: 12px 24px; font-size: 0.8rem; color: #555 !important; border-bottom: none; text-align: center; }
 .dropdown-content a:hover { background: transparent; color: var(--accent) !important; }
-
 /* 移动端 Banner 保持 16:9 */
 .banner-slider {
 height: auto;
@@ -617,16 +598,13 @@ min-height: auto;
 }
 .slider-dots { bottom: 15px; }
 .dot { width: 8px; height: 8px; }
-
 .material-row, .material-row.reverse { grid-template-columns: 1fr; gap: 32px; }
 .material-row.reverse .material-image { order: 0; }
 .founder-grid { grid-template-columns: 1fr; gap: 32px; }
 .founder-image { max-width: 420px; margin: 0 auto; }
-
 .category-title { font-size: 1.3rem; margin-bottom: 24px; }
 .products-grid { grid-template-columns: repeat(2, 1fr); gap: 30px 16px; }
 section { padding: 70px 0; }
-
 /* 移动端灯箱：上下布局（图在上，文字缩略图在下） */
 .lightbox-main {
   padding: 60px 0 0;
@@ -657,7 +635,6 @@ section { padding: 70px 0; }
 .thumbnail-container { justify-content: flex-start; }
 .close-btn { top: 20px; right: 20px; width: 24px; height: 24px; }
 }
-
 @media (max-width: 520px) {
   .banner-slider { 
     height: auto; 
@@ -691,20 +668,17 @@ section { padding: 70px 0; }
     <span></span><span></span><span></span>
   </button>
 </nav>
-
 <!-- Banner 轮播区 -->
 <header id="home" class="banner-slider">
   <div class="slide active" style="background-image: url('banner1.jpg');"></div>
   <div class="slide" style="background-image: url('banner2.jpg');"></div>
   <div class="slide" style="background-image: url('banner3.jpg');"></div>
-
   <div class="slider-dots">
     <div class="dot active" data-index="0"></div>
     <div class="dot" data-index="1"></div>
     <div class="dot" data-index="2"></div>
   </div>
 </header>
-
 <section id="about" class="about">
   <div class="container narrow">
     <p class="hi">Hi there,</p>
@@ -714,7 +688,6 @@ section { padding: 70px 0; }
     <p class="signature">XOXO, Ben</p>
   </div>
 </section>
-
 <section class="materials">
   <div class="container">
     <div class="material-row">
@@ -747,7 +720,6 @@ section { padding: 70px 0; }
     </div>
   </div>
 </section>
-
 <section id="products" class="products">
   <div class="container">
     <span class="section-label">Selected Pieces</span>
@@ -755,18 +727,16 @@ section { padding: 70px 0; }
     <div id="products-container"></div>
   </div>
 </section>
-
 <div id="lightbox" class="lightbox">
   <div class="close-btn" id="close-btn" aria-label="Close"></div>
   <div class="lightbox-main" id="lightbox-main">
     <button class="nav-btn prev-btn" id="prev-btn">
-      <svg viewBox="0 0 24 24"><path d="M15 18L9 12L15 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M15 18L9 12L15 6" stroke-linecap="round" stroke-linejoin="round" /></svg>
     </button>
     <img id="lightbox-img" src="" alt="Product Preview">
     <button class="nav-btn next-btn" id="next-btn">
-      <svg viewBox="0 0 24 24"><path d="M9 18L15 12L9 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M9 18L15 12L9 6" stroke-linecap="round" stroke-linejoin="round" /></svg>
     </button>
-
     <!-- 信息栏：桌面悬浮于图底部 / 移动端位于图片下方 -->
     <div class="lightbox-footer" id="lightbox-footer">
       <div class="lightbox-info">
@@ -777,7 +747,6 @@ section { padding: 70px 0; }
     </div>
   </div>
 </div>
-
 <section id="founder" class="founder">
   <div class="container">
     <div class="founder-grid">
@@ -791,7 +760,6 @@ section { padding: 70px 0; }
     </div>
   </div>
 </section>
-
 <section id="contact" class="contact">
   <div class="container narrow">
     <span class="section-label">Get in Touch</span>
@@ -823,9 +791,7 @@ section { padding: 70px 0; }
     </a>
   </div>
 </section>
-
 <footer>© 2025 Luquan Gewu Zhixiang E-commerce Company. All rights reserved.</footer>
-
 <script>
 /* ==========================================
    1. Banner 轮播图逻辑
@@ -834,28 +800,23 @@ const slides = document.querySelectorAll('.slide');
 const dots = document.querySelectorAll('.dot');
 let currentSlide = 0;
 let slideInterval;
-
 function showSlide(index) {
   slides.forEach(s => s.classList.remove('active'));
   dots.forEach(d => d.classList.remove('active'));
   slides[index].classList.add('active');
   dots[index].classList.add('active');
 }
-
 function nextSlide() {
   currentSlide = (currentSlide + 1) % slides.length;
   showSlide(currentSlide);
 }
-
 function startSlideShow() {
   slideInterval = setInterval(nextSlide, 5000); 
 }
-
 function resetSlideShow() {
   clearInterval(slideInterval);
   startSlideShow();
 }
-
 dots.forEach((dot, index) => {
   dot.addEventListener('click', () => {
     currentSlide = index;
@@ -863,10 +824,7 @@ dots.forEach((dot, index) => {
     resetSlideShow(); 
   });
 });
-
 startSlideShow();
-
-
 /* ==========================================
    2. 产品数据分类配置区
    ========================================== */
@@ -976,8 +934,6 @@ const productCategories = [
     ]
   }
 ];
-
-
 /* ==========================================
    3. 页面渲染与交互逻辑
    ========================================== */
@@ -993,11 +949,9 @@ const closeBtn = document.getElementById('close-btn');
 const prevBtn = document.getElementById('prev-btn');
 const nextBtn = document.getElementById('next-btn');
 const lightboxMain = document.getElementById('lightbox-main');
-
 let currentSeriesIndex = 0;
 let currentImgIndex = 0;
 let currentCategoryData = null; 
-
 // 渲染产品网格
 function renderProducts() {
   productCategories.forEach(cat => {
@@ -1009,10 +963,8 @@ function renderProducts() {
     title.className = 'category-title';
     title.textContent = cat.title;
     block.appendChild(title);
-
     const grid = document.createElement('div');
     grid.className = 'products-grid';
-
     cat.series.forEach((series, sIdx) => {
       const card = document.createElement('div');
       card.className = 'product-card';
@@ -1028,12 +980,10 @@ function renderProducts() {
       card.addEventListener('click', () => openLightbox(cat.series, sIdx));
       grid.appendChild(card);
     });
-
     block.appendChild(grid);
     productsContainer.appendChild(block);
   });
 }
-
 function openLightbox(seriesData, seriesIndex) {
   currentCategoryData = seriesData;
   currentSeriesIndex = seriesIndex;
@@ -1043,12 +993,10 @@ function openLightbox(seriesData, seriesIndex) {
   lightbox.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
-
 function closeLightbox() {
   lightbox.classList.remove('active');
   document.body.style.overflow = '';
 }
-
 function updateLightboxContent() {
   const series = currentCategoryData[currentSeriesIndex];
   const currentImage = series.images[currentImgIndex];
@@ -1081,7 +1029,6 @@ function updateLightboxContent() {
     if(activeThumb) activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
   }, 100);
 }
-
 function changeImage(direction) {
   const series = currentCategoryData[currentSeriesIndex];
   currentImgIndex += direction;
@@ -1092,7 +1039,6 @@ function changeImage(direction) {
   }
   updateLightboxContent();
 }
-
 // ================= 导航栏交互 =================
 // 1. 移动端汉堡菜单开关
 navToggle.addEventListener('click', () => {
@@ -1103,7 +1049,6 @@ navToggle.addEventListener('click', () => {
     navProducts.classList.remove('arrow-up');
   }
 });
-
 // 2. 导航栏滚动变色
 window.addEventListener('scroll', () => {
   if(window.scrollY > 80){
@@ -1112,11 +1057,9 @@ window.addEventListener('scroll', () => {
     nav.classList.remove('scrolled');
   }
 });
-
 // 3. 移动端 Products 下拉逻辑（箭头与子菜单同步）
 const navProducts = document.getElementById('nav-products');
 const dropdownMenu = document.getElementById('dropdown-menu');
-
 navProducts.addEventListener('click', (e) => {
   // 仅在移动端执行
   if (window.innerWidth <= 860) {
@@ -1125,7 +1068,6 @@ navProducts.addEventListener('click', (e) => {
     navProducts.classList.toggle('arrow-up');           // 同步切换箭头方向
   }
 });
-
 // 4. 点击导航链接后自动收起菜单（箭头同步复位朝下）
 document.querySelectorAll('.nav-links a').forEach(link => {
   link.addEventListener('click', (e) => {
@@ -1139,7 +1081,6 @@ document.querySelectorAll('.nav-links a').forEach(link => {
     }
   });
 });
-
 // 5. 点击汉堡菜单以外的页面区域，自动收起菜单（箭头同步复位朝下）
 document.addEventListener('click', (e) => {
   if (window.innerWidth <= 860 && nav.classList.contains('open')) {
@@ -1150,25 +1091,21 @@ document.addEventListener('click', (e) => {
     }
   }
 });
-
 // ================= 灯箱事件 =================
 closeBtn.addEventListener('click', closeLightbox);
 prevBtn.addEventListener('click', (e) => { e.stopPropagation(); changeImage(-1); });
 nextBtn.addEventListener('click', (e) => { e.stopPropagation(); changeImage(1); });
-
 lightboxMain.addEventListener('click', (e) => {
   if (e.target === lightboxMain) {
     closeLightbox();
   }
 });
-
 document.addEventListener('keydown', (e) => {
   if (!lightbox.classList.contains('active')) return;
   if (e.key === 'ArrowLeft') changeImage(-1);
   if (e.key === 'ArrowRight') changeImage(1);
   if (e.key === 'Escape') closeLightbox();
 });
-
 let touchStartX = 0;
 let touchEndX = 0;
 lightboxMain.addEventListener('touchstart', (e) => {
@@ -1178,34 +1115,28 @@ lightboxMain.addEventListener('touchend', (e) => {
   touchEndX = e.changedTouches[0].screenX;
   handleSwipe();
 }, {passive: true});
-
 function handleSwipe() {
   const swipeThreshold = 50;
   if (touchEndX < touchStartX - swipeThreshold) changeImage(1);
   if (touchEndX > touchStartX + swipeThreshold) changeImage(-1);
 }
-
 /* ===== 缩略图鼠标拖拽滑动 ===== */
 (function initThumbDrag() {
   const container = thumbnailContainer;
   let isDown = false;
   let startX;
   let scrollLeft;
-
   container.addEventListener('mousedown', (e) => {
     isDown = true;
     startX = e.pageX - container.offsetLeft;
     scrollLeft = container.scrollLeft;
   });
-
   container.addEventListener('mouseleave', () => {
     isDown = false;
   });
-
   container.addEventListener('mouseup', () => {
     isDown = false;
   });
-
   container.addEventListener('mousemove', (e) => {
     if (!isDown) return;
     e.preventDefault();
@@ -1214,24 +1145,20 @@ function handleSwipe() {
     container.scrollLeft = scrollLeft - walk;
   });
 })();
-
 /* ==========================================
    4. 内容保护：禁止复制/粘贴/右键/拖拽/下载
    ========================================== */
 (function protectContent() {
-
   const isEditable = (el) => {
     if (!el) return false;
     const tag = el.tagName;
     return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || el.isContentEditable;
   };
-
   // 1. 屏蔽右键菜单（含移动端长按图片的保存菜单）
   document.addEventListener('contextmenu', function (e) {
     e.preventDefault();
     return false;
   }, false);
-
   // 2. 屏蔽拖拽
   document.addEventListener('dragstart', function (e) {
     e.preventDefault();
@@ -1241,7 +1168,6 @@ function handleSwipe() {
     e.preventDefault();
     return false;
   }, false);
-
   // 3. 屏蔽复制、剪切、粘贴
   ['copy', 'cut', 'paste'].forEach(function (type) {
     document.addEventListener(type, function (e) {
@@ -1255,13 +1181,11 @@ function handleSwipe() {
       return false;
     }, false);
   });
-
   // 4. 屏蔽快捷键：复制/剪切/粘贴/全选/保存/打印/查看源码
   document.addEventListener('keydown', function (e) {
     const key = (e.key || '').toLowerCase();
     const ctrl = e.ctrlKey || e.metaKey;
     if (!ctrl) return;
-
     if (key === 's' || key === 'p') {
       e.preventDefault();
       e.stopPropagation();
@@ -1278,14 +1202,12 @@ function handleSwipe() {
       return false;
     }
   }, true);
-
   // 5. 屏蔽图片上的鼠标默认行为（防止拖存）
   document.addEventListener('mousedown', function (e) {
     if (e.target && e.target.tagName === 'IMG') {
       e.preventDefault();
     }
   }, false);
-
   // 6. 移动端长按兜底
   let pressTimer = null;
   document.addEventListener('touchstart', function (e) {
@@ -1295,7 +1217,6 @@ function handleSwipe() {
       try { document.getSelection().removeAllRanges(); } catch (err) {}
     }, 500);
   }, { passive: true });
-
   const clearPress = function () {
     if (pressTimer) {
       clearTimeout(pressTimer);
@@ -1305,7 +1226,6 @@ function handleSwipe() {
   document.addEventListener('touchend', clearPress, { passive: true });
   document.addEventListener('touchmove', clearPress, { passive: true });
   document.addEventListener('touchcancel', clearPress, { passive: true });
-
   // 7. 选中文本自动清空（双保险）
   document.addEventListener('selectstart', function (e) {
     if (!isEditable(e.target)) {
@@ -1313,9 +1233,7 @@ function handleSwipe() {
       return false;
     }
   }, false);
-
 })();
-
 // 启动产品渲染
 renderProducts();
 </script>
