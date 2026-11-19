@@ -1007,9 +1007,8 @@ function updateLightboxContent() {
     lbImg.style.opacity = 1;
   }, 200);
   
-  lbTitle.textContent = `${series.title} - ${currentImage.colorName}`;
+  lbTitle.textContent = series.title;
   lbDesc.textContent = series.desc;
-  
   thumbnailContainer.innerHTML = '';
   series.images.forEach((img, idx) => {
     const thumb = document.createElement('img');
