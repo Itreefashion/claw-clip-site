@@ -82,6 +82,7 @@ a {
   text-transform: uppercase;
   font-weight: 500;
   transition: color .25s;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3); /* 防止白色图片上看不清 */
 }
 .nav-links a:hover {
   color: var(--accent-soft);
@@ -114,6 +115,7 @@ a {
   padding: 10px 20px;
   font-size: 0.65rem;
   letter-spacing: 0.1em;
+  text-shadow: none;
 }
 .dropdown-content a:hover {
   background: #f0f0f0;
@@ -128,6 +130,7 @@ a {
 }
 .nav.scrolled .nav-links a {
   color: #111;
+  text-shadow: none;
 }
 .nav.scrolled .nav-links a:hover {
   color: var(--accent);
@@ -173,13 +176,57 @@ a {
   transform: translateY(-6.5px) rotate(-45deg);
 }
 
-/* ========== Banner 全屏 ========== */
-.banner {
+/* ========== Banner 轮播图 ========== */
+.banner-slider {
   position: relative;
   width: 100%;
   height: 100vh;
   min-height: 600px;
-  background: #dcdcdc url('banner.jpg') center center / cover no-repeat;
+  overflow: hidden;
+  background: #dcdcdc;
+}
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out; /* 平滑的淡入淡出 */
+  z-index: 1;
+}
+.slide.active {
+  opacity: 1;
+  z-index: 2;
+}
+/* 轮播指示点 */
+.slider-dots {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 15px;
+  z-index: 10;
+}
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+.dot:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+.dot.active {
+  background: #fff;
+  transform: scale(1.3);
 }
 
 /* ========== 通用区块 ========== */
@@ -241,7 +288,7 @@ footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spac
 .products { background: var(--bg); }
 .category-block {
   margin-bottom: 100px;
-  scroll-margin-top: 120px; /* 保证跳转后标题不被导航栏遮挡 */
+  scroll-margin-top: 120px;
 }
 .category-block:last-child {
   margin-bottom: 0;
@@ -306,8 +353,6 @@ footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spac
   opacity: 1;
   visibility: visible;
 }
-
-/* 关闭按钮 */
 .close-btn {
   position: absolute;
   top: 30px;
@@ -335,7 +380,6 @@ footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spac
 .close-btn::before { transform: rotate(45deg); }
 .close-btn::after { transform: rotate(-45deg); }
 
-/* 顶部大图区 (占满剩余空间) */
 .lightbox-main {
   flex: 1;
   position: relative;
@@ -343,9 +387,8 @@ footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spac
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 40px; /* 四周留点空白，点击此空白可退出 */
+  padding: 40px;
 }
-/* 全屏大图不强制比例，完全包含（contain） */
 .lightbox-main img {
   max-width: 100%;
   max-height: 100%;
@@ -353,8 +396,6 @@ footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spac
   transition: opacity 0.4s ease;
   box-shadow: 0 10px 40px rgba(0,0,0,0.5);
 }
-
-/* 左右箭头 */
 .nav-btn {
   position: absolute;
   top: 50%;
@@ -386,7 +427,6 @@ footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spac
   fill: none;
 }
 
-/* 底部文字与缩略图区 */
 .lightbox-footer {
   width: 100%;
   padding: 20px 40px 40px;
@@ -410,8 +450,6 @@ footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spac
   text-transform: uppercase;
   margin-bottom: 24px;
 }
-
-/* 缩略图列表 */
 .thumbnail-container {
   display: flex;
   gap: 15px;
@@ -434,7 +472,7 @@ footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spac
 .thumbnail-container img.active {
   border-color: #fff;
   opacity: 1;
-  transform: translateY(-5px); /* 选中时微微上浮 */
+  transform: translateY(-5px);
 }
 
 /* ========== 响应式 ========== */
@@ -458,7 +496,6 @@ footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spac
   .nav.scrolled { padding: 12px 24px; }
   .nav-toggle { display: flex; }
   
-  /* 移动端导航全屏下拉 */
   .nav-links {
     position: absolute;
     top: 100%;
@@ -475,11 +512,9 @@ footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spac
     transition: opacity 0.3s ease, transform 0.3s ease;
   }
   .nav.open .nav-links { display: flex; opacity: 1; transform: translateY(0); }
-  
   .nav-links > li { width: 100%; }
-  .nav-links a { color: #111 !important; padding: 16px 24px; display: block; font-size: 0.9rem; border-bottom: 1px solid #eee; text-align: center;}
+  .nav-links a { color: #111 !important; padding: 16px 24px; display: block; font-size: 0.9rem; border-bottom: 1px solid #eee; text-align: center; text-shadow: none;}
   
-  /* 移动端下拉菜单展开 */
   .dropdown-content {
     position: static;
     transform: none;
@@ -495,7 +530,10 @@ footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spac
   .dropdown-content a { padding: 12px 24px; font-size: 0.8rem; color: #555 !important; }
   .dropdown-content a:hover { background: transparent; color: var(--accent) !important; }
 
-  .banner { height: 65vh; min-height: 400px; }
+  .banner-slider { height: 65vh; min-height: 400px; }
+  .slider-dots { bottom: 20px; }
+  .dot { width: 8px; height: 8px; }
+  
   .material-row, .material-row.reverse { grid-template-columns: 1fr; gap: 32px; }
   .material-row.reverse .material-image { order: 0; }
   .founder-grid { grid-template-columns: 1fr; gap: 32px; }
@@ -505,9 +543,8 @@ footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spac
   .products-grid { grid-template-columns: repeat(2, 1fr); gap: 30px 16px; }
   section { padding: 70px 0; }
   
-  /* 移动端画廊 */
-  .lightbox-main { padding: 0; } /* 移动端全屏展示图片 */
-  .nav-btn { display: none; } /* 移动端隐藏箭头，全靠滑动 */
+  .lightbox-main { padding: 0; }
+  .nav-btn { display: none; }
   .lightbox-footer { padding: 15px 20px 30px; }
   .lightbox-info h3 { font-size: 1.2rem; }
   .lightbox-info p { font-size: 0.7rem; margin-bottom: 15px; }
@@ -515,7 +552,7 @@ footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spac
 }
 
 @media (max-width: 520px) {
-  .banner { height: 55vh; }
+  .banner-slider { height: 55vh; }
   .container { padding: 0 20px; }
 }
 </style>
@@ -528,7 +565,6 @@ footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spac
     <li><a href="#about">About</a></li>
     <li>
       <a href="#products" id="nav-products">Products</a>
-      <!-- 下拉子目录 -->
       <ul class="dropdown-content" id="dropdown-menu">
         <li><a href="#cat-pc">PC HAIR CLAW</a></li>
         <li><a href="#cat-acetate">ACETATE HAIR CLAW</a></li>
@@ -546,7 +582,20 @@ footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spac
   </button>
 </nav>
 
-<header id="home" class="banner"></header>
+<!-- Banner 轮播区 -->
+<header id="home" class="banner-slider">
+  <!-- 请确保有这三张图片，如果暂时没有，可以用原来的 banner.jpg 改名代替 -->
+  <div class="slide active" style="background-image: url('banner1.jpg');"></div>
+  <div class="slide" style="background-image: url('banner2.jpg');"></div>
+  <div class="slide" style="background-image: url('banner3.jpg');"></div>
+  
+  <!-- 轮播指示点 -->
+  <div class="slider-dots">
+    <div class="dot active" data-index="0"></div>
+    <div class="dot" data-index="1"></div>
+    <div class="dot" data-index="2"></div>
+  </div>
+</header>
 
 <section id="about" class="about">
   <div class="container narrow">
@@ -591,7 +640,6 @@ footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spac
   </div>
 </section>
 
-<!-- Products 动态渲染区域 -->
 <section id="products" class="products">
   <div class="container">
     <span class="section-label">Selected Pieces</span>
@@ -600,11 +648,8 @@ footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spac
   </div>
 </section>
 
-<!-- 全屏画廊 -->
 <div id="lightbox" class="lightbox">
   <div class="close-btn" id="close-btn" aria-label="Close"></div>
-  
-  <!-- 顶部大图区（点击空白退出） -->
   <div class="lightbox-main" id="lightbox-main">
     <button class="nav-btn prev-btn" id="prev-btn">
       <svg viewBox="0 0 24 24"><path d="M15 18L9 12L15 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -614,8 +659,6 @@ footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spac
       <svg viewBox="0 0 24 24"><path d="M9 18L15 12L9 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
   </div>
-
-  <!-- 底部信息区 -->
   <div class="lightbox-footer" id="lightbox-footer">
     <div class="lightbox-info">
       <h3 id="lightbox-title"></h3>
@@ -675,7 +718,49 @@ footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; letter-spac
 
 <script>
 /* ==========================================
-   产品数据分类配置区（未来在这里增删改查）
+   1. Banner 轮播图逻辑
+   ========================================== */
+const slides = document.querySelectorAll('.slide');
+const dots = document.querySelectorAll('.dot');
+let currentSlide = 0;
+let slideInterval;
+
+function showSlide(index) {
+  slides.forEach(s => s.classList.remove('active'));
+  dots.forEach(d => d.classList.remove('active'));
+  slides[index].classList.add('active');
+  dots[index].classList.add('active');
+}
+
+function nextSlide() {
+  currentSlide = (currentSlide + 1) % slides.length;
+  showSlide(currentSlide);
+}
+
+function startSlideShow() {
+  slideInterval = setInterval(nextSlide, 5000); // 每 5 秒切换一次
+}
+
+function resetSlideShow() {
+  clearInterval(slideInterval);
+  startSlideShow();
+}
+
+// 点击指示点切换
+dots.forEach((dot, index) => {
+  dot.addEventListener('click', () => {
+    currentSlide = index;
+    showSlide(currentSlide);
+    resetSlideShow(); // 切换后重新计时
+  });
+});
+
+// 启动轮播
+startSlideShow();
+
+
+/* ==========================================
+   2. 产品数据分类配置区
    ========================================== */
 const productCategories = [
   {
@@ -775,8 +860,9 @@ const productCategories = [
   }
 ];
 
+
 /* ==========================================
-   页面渲染与交互逻辑（无需修改）
+   3. 页面渲染与交互逻辑
    ========================================== */
 const nav = document.getElementById('nav');
 const navToggle = document.getElementById('navToggle');
@@ -793,27 +879,23 @@ const lightboxMain = document.getElementById('lightbox-main');
 
 let currentSeriesIndex = 0;
 let currentImgIndex = 0;
-let currentCategoryData = null; // 当前分类的数据
+let currentCategoryData = null; 
 
-// 1. 初始化产品网格渲染
+// 渲染产品网格
 function renderProducts() {
   productCategories.forEach(cat => {
-    // 创建分类区块
     const block = document.createElement('div');
     block.className = 'category-block';
     block.id = cat.id;
     
-    // 分类标题
     const title = document.createElement('h3');
     title.className = 'category-title';
     title.textContent = cat.title;
     block.appendChild(title);
 
-    // 网格容器
     const grid = document.createElement('div');
     grid.className = 'products-grid';
 
-    // 渲染该分类下的系列
     cat.series.forEach((series, sIdx) => {
       const card = document.createElement('div');
       card.className = 'product-card';
@@ -826,7 +908,6 @@ function renderProducts() {
           <p>${series.images.length} Colors Available</p>
         </div>
       `;
-      // 点击打开灯箱，传入当前分类的数据和系列索引
       card.addEventListener('click', () => openLightbox(cat.series, sIdx));
       grid.appendChild(card);
     });
@@ -836,7 +917,7 @@ function renderProducts() {
   });
 }
 
-// 2. 打开灯箱
+// 打开灯箱
 function openLightbox(seriesData, seriesIndex) {
   currentCategoryData = seriesData;
   currentSeriesIndex = seriesIndex;
@@ -847,18 +928,17 @@ function openLightbox(seriesData, seriesIndex) {
   document.body.style.overflow = 'hidden';
 }
 
-// 3. 关闭灯箱
+// 关闭灯箱
 function closeLightbox() {
   lightbox.classList.remove('active');
   document.body.style.overflow = '';
 }
 
-// 4. 更新灯箱内容
+// 更新灯箱内容
 function updateLightboxContent() {
   const series = currentCategoryData[currentSeriesIndex];
   const currentImage = series.images[currentImgIndex];
   
-  // 图片淡出淡入
   lbImg.style.opacity = 0;
   setTimeout(() => {
     lbImg.src = currentImage.url;
@@ -868,7 +948,6 @@ function updateLightboxContent() {
   lbTitle.textContent = `${series.title} - ${currentImage.colorName}`;
   lbDesc.textContent = series.desc;
   
-  // 渲染底部缩略图
   thumbnailContainer.innerHTML = '';
   series.images.forEach((img, idx) => {
     const thumb = document.createElement('img');
@@ -876,21 +955,20 @@ function updateLightboxContent() {
     thumb.alt = img.colorName;
     if (idx === currentImgIndex) thumb.classList.add('active');
     thumb.addEventListener('click', (e) => {
-      e.stopPropagation(); // 防止点击缩略图触发背景关闭
+      e.stopPropagation(); 
       currentImgIndex = idx;
       updateLightboxContent();
     });
     thumbnailContainer.appendChild(thumb);
   });
   
-  // 居中选中的缩略图
   setTimeout(() => {
     const activeThumb = thumbnailContainer.querySelector('.active');
     if(activeThumb) activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
   }, 100);
 }
 
-// 5. 切换图片
+// 切换图片
 function changeImage(direction) {
   const series = currentCategoryData[currentSeriesIndex];
   currentImgIndex += direction;
@@ -902,13 +980,11 @@ function changeImage(direction) {
   updateLightboxContent();
 }
 
-// 6. 事件绑定
-// 导航汉堡按钮
+// 事件绑定
 navToggle.addEventListener('click', () => {
   nav.classList.toggle('open');
 });
 
-// 导航滚动变色
 window.addEventListener('scroll', () => {
   if(window.scrollY > 80){
     nav.classList.add('scrolled');
@@ -917,48 +993,40 @@ window.addEventListener('scroll', () => {
   }
 });
 
-// 移动端下拉菜单展开/收起
 const navProducts = document.getElementById('nav-products');
 const dropdownMenu = document.getElementById('dropdown-menu');
 navProducts.addEventListener('click', (e) => {
   if (window.innerWidth <= 860) {
-    // 如果是移动端且点击了Products，展开下拉菜单
     if (!dropdownMenu.classList.contains('active')) {
-      e.preventDefault(); // 先阻止跳转，展开菜单
+      e.preventDefault(); 
       dropdownMenu.classList.add('active');
     } else {
-      // 如果已经展开，再次点击就让它正常跳转
       dropdownMenu.classList.remove('active');
     }
   }
 });
 
-// 移动端点击导航链接自动收起菜单
 document.querySelectorAll('.nav-links a').forEach(link => {
   link.addEventListener('click', (e) => {
     if (window.innerWidth <= 860) {
-      // 排除掉点击 Products 主标题展开菜单的那一次
       if (e.target.id !== 'nav-products' || dropdownMenu.classList.contains('active')) {
         nav.classList.remove('open');
-        dropdownMenu.classList.remove('active'); // 收起子菜单
+        dropdownMenu.classList.remove('active'); 
       }
     }
   });
 });
 
-// 画廊关闭与切换
 closeBtn.addEventListener('click', closeLightbox);
 prevBtn.addEventListener('click', (e) => { e.stopPropagation(); changeImage(-1); });
 nextBtn.addEventListener('click', (e) => { e.stopPropagation(); changeImage(1); });
 
-// 点击大图空白区域关闭
 lightboxMain.addEventListener('click', (e) => {
   if (e.target === lightboxMain) {
     closeLightbox();
   }
 });
 
-// 键盘支持
 document.addEventListener('keydown', (e) => {
   if (!lightbox.classList.contains('active')) return;
   if (e.key === 'ArrowLeft') changeImage(-1);
@@ -966,7 +1034,6 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeLightbox();
 });
 
-// 移动端滑动支持
 let touchStartX = 0;
 let touchEndX = 0;
 lightboxMain.addEventListener('touchstart', (e) => {
@@ -983,7 +1050,7 @@ function handleSwipe() {
   if (touchEndX > touchStartX + swipeThreshold) changeImage(-1);
 }
 
-// 启动
+// 启动产品渲染
 renderProducts();
 </script>
 </body>
