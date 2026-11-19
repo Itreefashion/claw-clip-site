@@ -138,7 +138,8 @@ color: var(--accent-soft);
   border-top: 5px solid currentColor;
   transition: transform 0.3s ease;
 }
-.nav.open #nav-products::after {
+/* ===== 修复：箭头只跟随子菜单开关状态（arrow-up 由JS控制） ===== */
+#nav-products.arrow-up::after {
   transform: rotate(180deg);
 }
 
@@ -585,7 +586,7 @@ transition: opacity 0.3s ease, transform 0.3s ease;
 .nav-links > li { width: 100%; }
 .nav-links a { color: #111 !important; padding: 16px 24px; display: block; font-size: 0.9rem; border-bottom: 1px solid #eee; text-align: center; text-shadow: none;}
 
-/* ===== 修复1：Products 在汉堡菜单中整体居中（文字+箭头） ===== */
+/* Products 在汉堡菜单中整体居中（文字+箭头） */
 #nav-products {
   display: flex;
   justify-content: center;
@@ -626,17 +627,17 @@ min-height: auto;
 .products-grid { grid-template-columns: repeat(2, 1fr); gap: 30px 16px; }
 section { padding: 70px 0; }
 
-/* ===== 修复3：移动端灯箱改为上下布局（图在上，文字缩略图在下） ===== */
+/* 移动端灯箱：上下布局（图在上，文字缩略图在下） */
 .lightbox-main {
   padding: 60px 0 0;
-  flex-direction: column;      /* 关键：纵向排列 */
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   overflow-y: auto;
 }
 .lightbox-main > img {
   max-width: 100%;
-  max-height: 58vh;            /* 给下方文字缩略图留出空间 */
+  max-height: 58vh;
   width: auto;
   height: auto;
   flex-shrink: 1;
@@ -645,7 +646,7 @@ section { padding: 70px 0; }
 }
 .nav-btn { display: none; }
 .lightbox-footer {
-  position: relative;          /* 回到文档流，位于图片正下方 */
+  position: relative;
   width: 100%;
   padding: 15px 20px 30px;
   background: transparent;
@@ -1087,6 +1088,11 @@ function changeImage(direction) {
 // 1. 移动端汉堡菜单开关
 navToggle.addEventListener('click', () => {
   nav.classList.toggle('open');
+  // 汉堡整体收起时，同步复位子菜单和箭头
+  if (!nav.classList.contains('open')) {
+    dropdownMenu.classList.remove('active');
+    navProducts.classList.remove('arrow-up');
+  }
 });
 
 // 2. 导航栏滚动变色
@@ -1098,7 +1104,7 @@ window.addEventListener('scroll', () => {
   }
 });
 
-// 3. 移动端 Products 下拉逻辑
+// 3. 移动端 Products 下拉逻辑（箭头与子菜单同步）
 const navProducts = document.getElementById('nav-products');
 const dropdownMenu = document.getElementById('dropdown-menu');
 
@@ -1106,11 +1112,12 @@ navProducts.addEventListener('click', (e) => {
   // 仅在移动端执行
   if (window.innerWidth <= 860) {
     e.preventDefault(); // 阻止默认跳转到 #products
-    dropdownMenu.classList.toggle('active'); // 切换子菜单显示/隐藏
+    dropdownMenu.classList.toggle('active');            // 切换子菜单显示/隐藏
+    navProducts.classList.toggle('arrow-up');           // 同步切换箭头方向
   }
 });
 
-// 4. 点击导航链接后自动收起菜单
+// 4. 点击导航链接后自动收起菜单（箭头同步复位朝下）
 document.querySelectorAll('.nav-links a').forEach(link => {
   link.addEventListener('click', (e) => {
     if (window.innerWidth <= 860) {
@@ -1118,17 +1125,19 @@ document.querySelectorAll('.nav-links a').forEach(link => {
       if (link.closest('.dropdown-content') || link.id !== 'nav-products') {
         nav.classList.remove('open');
         dropdownMenu.classList.remove('active');
+        navProducts.classList.remove('arrow-up');
       }
     }
   });
 });
 
-// ===== 修复2【新增】：点击汉堡菜单以外的页面区域，自动收起菜单 =====
+// 5. 点击汉堡菜单以外的页面区域，自动收起菜单（箭头同步复位朝下）
 document.addEventListener('click', (e) => {
   if (window.innerWidth <= 860 && nav.classList.contains('open')) {
     if (!nav.contains(e.target)) {
       nav.classList.remove('open');
       dropdownMenu.classList.remove('active');
+      navProducts.classList.remove('arrow-up');
     }
   }
 });
