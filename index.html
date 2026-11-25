@@ -1336,6 +1336,10 @@ function openLightbox(seriesData, seriesIndex) {
   currentSeriesIndex = seriesIndex;
   currentImgIndex = 0;
   
+  // 修复1：打开新的大图前，强行清空旧的图片地址，防止闪现
+  lbImg.src = ''; 
+  lbImg.style.opacity = 0;
+  
   updateLightboxContent();
   lightbox.classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -1350,14 +1354,28 @@ function updateLightboxContent() {
   const series = currentCategoryData[currentSeriesIndex];
   const currentImage = series.images[currentImgIndex];
   
-  lbImg.style.opacity = 0;
-  setTimeout(() => {
+  // 修复2：使用内存预加载，等新图片完全就绪后再显示
+  lbImg.style.opacity = 0; 
+  
+  const tempImg = new Image();
+  tempImg.src = currentImage.url;
+  
+  tempImg.onload = () => {
     lbImg.src = currentImage.url;
     lbImg.style.opacity = 1;
-  }, 200);
+  };
+  
+  if (tempImg.complete) {
+    lbImg.src = currentImage.url;
+    lbImg.style.opacity = 1;
+  }
   
   lbTitle.textContent = series.title;
   lbDesc.textContent = series.desc;
+  
+  // 下面保留你原本渲染缩略图的代码即可
+  thumbnailContainer.innerHTML = '';
+  // ...（保持你原来的缩略图渲染代码不变）
   
   thumbnailContainer.innerHTML = '';
   series.images.forEach((img, idx) => {
