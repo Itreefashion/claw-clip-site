@@ -1,4 +1,5 @@
 .git
-node_modules
-.wrangler
-.DS_Store
+.git/
+**/.git
+**/.git/
+*.pack
